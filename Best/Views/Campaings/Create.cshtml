@@ -1,0 +1,59 @@
+﻿@model CreateCampaing
+@{
+    ViewData["Title"] = "Create";
+}
+@using Best.Data.Interfaces
+@inject ITopics topics
+@inject UserManager<BestUser> UserManager
+<h1>Create</h1>
+
+<h4>Campaing</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Campaing.Id" class="control-label"></label>
+                <input asp-for="Campaing.Id" class="form-control" />
+                <span asp-validation-for="Campaing.Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Campaing.Name" class="control-label"></label>
+                <input asp-for="Campaing.Name" class="form-control" />
+                <span asp-validation-for="Campaing.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Campaing.Rating" class="control-label"></label>
+                <input asp-for="Campaing.Rating" class="form-control" />
+                <span asp-validation-for="Campaing.Rating" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Campaing.Bonuses" class="control-label"></label>
+                <input asp-for="Campaing.Bonuses" class="form-control" />
+                <span asp-validation-for="Campaing.Bonuses" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <select class="custom-select" asp-for="Topic.Id" required>
+                    @foreach (var topic in topics.GetTopics)
+                    {
+                        <option value="@topic.Id">@topic.Name</option>
+                    }
+                </select>
+                <div class="invalid-feedback">Example invalid custom select feedback</div>
+            </div>
+            <div class="form-group">
+                <input type="hidden" asp-for="BestUser.Id" value="@UserManager.GetUserId(User)" />
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
