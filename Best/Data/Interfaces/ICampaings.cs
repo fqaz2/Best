@@ -10,6 +10,5 @@ namespace Best.Data.Interfaces
     {
         IEnumerable<Campaing> GetCampaings { get; }
         Campaing GetCampaingById(string campaing_id);
-        Task<bool> Add(Campaing Campaing);
     }
 }

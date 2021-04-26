@@ -192,6 +192,27 @@ namespace Best.Migrations.BestContentMigrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Post",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    text = table.Column<string>(nullable: true),
+                    mintext = table.Column<string>(nullable: true),
+                    CampaingId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Post", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Post_Campaing_CampaingId",
+                        column: x => x.CampaingId,
+                        principalTable: "Campaing",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -240,6 +261,11 @@ namespace Best.Migrations.BestContentMigrations
                 name: "IX_Campaing_TopicId",
                 table: "Campaing",
                 column: "TopicId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Post_CampaingId",
+                table: "Post",
+                column: "CampaingId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -260,10 +286,13 @@ namespace Best.Migrations.BestContentMigrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Campaing");
+                name: "Post");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Campaing");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

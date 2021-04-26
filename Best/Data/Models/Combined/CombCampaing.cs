@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Best.Data.Models.Combined
 {
-    public class CreateCampaing
+    public class CombCampaing
     {
         public Campaing Campaing { get; set; }
         public Topic Topic { get; set; }

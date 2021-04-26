@@ -1,0 +1,54 @@
+﻿@page
+@using Best.Data.Models
+@using Best.Data
+@inject UserManager<BestUser> UserManager
+@inject BestContent _context
+@{
+    ViewData["Title"] = "My campaings";
+    ViewData["ActivePage"] = ManageNavPages.Campaings;
+    IEnumerable<Campaing> campaings = _context.Campaing;
+}
+<h4>@ViewData["Title"]</h4>
+<div class="row">
+    <div class="col-md-12">
+        <a class="btn btn-primary" asp-controller="Campaings" asp-action="Create">Create</a>
+        <table class="table">
+            <thead class="thead-light text-center">
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Topic</th>
+                    <th scope="col">Rating</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody class="text-right">
+                @foreach (var campaing in campaings)
+                {
+                    if (campaing.BestUserId == UserManager.GetUserId(User))
+                    {
+                        <tr>
+                            <td>@campaing.Name</td>
+                            <td>
+                                @if (campaing.Topic != null)
+                                {
+                                    @campaing.Topic.Name
+                                }
+                            </td>
+                            <td>@campaing.Rating</td>
+                            <td>
+                                <a class="btn btn-primary" asp-controller="Campaings" asp-action="Edit" asp-route-id="@campaing.Id">Edit</a>
+                                <a class="btn btn-primary" asp-controller="Campaings" asp-action="Details" asp-route-id="@campaing.Id">Details</a>
+                                <a class="btn btn-danger" asp-controller="Campaings" asp-action="Delete" asp-route-id="@campaing.Id">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

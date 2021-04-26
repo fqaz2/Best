@@ -113,6 +113,30 @@ namespace Best.Migrations.BestContentMigrations
                     b.ToTable("Campaing");
                 });
 
+            modelBuilder.Entity("Best.Data.Models.Post", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CampaingId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("mintext")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CampaingId");
+
+                    b.ToTable("Post");
+                });
+
             modelBuilder.Entity("Best.Data.Models.Topic", b =>
                 {
                     b.Property<string>("Id")
@@ -263,13 +287,20 @@ namespace Best.Migrations.BestContentMigrations
 
             modelBuilder.Entity("Best.Data.Models.Campaing", b =>
                 {
-                    b.HasOne("Best.Areas.Identity.Data.BestUser", "BestUser")
+                    b.HasOne("Best.Areas.Identity.Data.BestUser", null)
                         .WithMany("Campaings")
                         .HasForeignKey("BestUserId");
 
                     b.HasOne("Best.Data.Models.Topic", "Topic")
                         .WithMany("Campaings")
                         .HasForeignKey("TopicId");
+                });
+
+            modelBuilder.Entity("Best.Data.Models.Post", b =>
+                {
+                    b.HasOne("Best.Data.Models.Campaing", "Campaing")
+                        .WithMany()
+                        .HasForeignKey("CampaingId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

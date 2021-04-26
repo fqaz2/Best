@@ -263,7 +263,7 @@ namespace Best.Migrations
 
             modelBuilder.Entity("Best.Data.Models.Campaing", b =>
                 {
-                    b.HasOne("Best.Areas.Identity.Data.BestUser", "BestUser")
+                    b.HasOne("Best.Areas.Identity.Data.BestUser", null)
                         .WithMany("Campaings")
                         .HasForeignKey("BestUserId");
 

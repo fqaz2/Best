@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Best.Migrations.BestContentMigrations
+namespace Best.Migrations
 {
-    [DbContext(typeof(BestContent))]
-    [Migration("20210423123336_Initial-Create2")]
-    partial class InitialCreate2
+    [DbContext(typeof(BestContext))]
+    [Migration("20210426154349_Initial-Create1")]
+    partial class InitialCreate1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -265,7 +265,7 @@ namespace Best.Migrations.BestContentMigrations
 
             modelBuilder.Entity("Best.Data.Models.Campaing", b =>
                 {
-                    b.HasOne("Best.Areas.Identity.Data.BestUser", "BestUser")
+                    b.HasOne("Best.Areas.Identity.Data.BestUser", null)
                         .WithMany("Campaings")
                         .HasForeignKey("BestUserId");
 

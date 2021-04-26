@@ -17,5 +17,7 @@ namespace Best.Data
         }
         public DbSet<Campaing> Campaing { get; set; }
         public DbSet<Topic> Topic { get; set; }
+        public DbSet<BestUser> BestUser { get; set; }
+        public DbSet<Post> Post { get; set; }
     }
 }
