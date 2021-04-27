@@ -1,5 +1,6 @@
 ﻿using Best.Data.Interfaces;
 using Best.Data.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +15,12 @@ namespace Best.Data.Repository
         {
             this.bestContent = bestContent;
         }
-        public IEnumerable<Post> GetPosts => bestContent.Post;
+        public IEnumerable<Post> GetPosts => bestContent.Post.Include(c => c.Campaing);
 
-        public Post GetPostById(string post_id) => bestContent.Post.FirstOrDefault(p => p.Id == post_id);
-
+        public Post GetPostById(string post_id) => GetPosts.FirstOrDefault(p => p.Id == post_id);
         public IEnumerable<Post> GetPostsByCampaingId(string campaing_Id) => bestContent.Post.Where(p => p.Campaing.Id == campaing_Id);
+
+        public IEnumerable<Post> GetPostsByUserId(string user_Id) => GetPosts.Where(p => p.Campaing.BestUserId == user_Id);
+        public Post GetPostByIdForUser(string user_id, string post_id) => GetPostsByUserId(user_id).FirstOrDefault(p => p.Id == post_id);
     }
 }

@@ -18,5 +18,9 @@ namespace Best.Data.Repository
         public IEnumerable<Campaing> GetCampaings => bestContent.Campaing.Include(t => t.Topic);
 
         public Campaing GetCampaingById(string campaing_id) => bestContent.Campaing.FirstOrDefault(c => c.Id == campaing_id);
+
+        public IEnumerable<Campaing> GetCampaingsByUserId(string user_id) => GetCampaings.Where(c => c.BestUserId == user_id);
+        public Campaing GetCampaingByIdForUser(string user_id, string campaing_id) => GetCampaingsByUserId(user_id).FirstOrDefault(c => c.Id == campaing_id);
+
     }
 }

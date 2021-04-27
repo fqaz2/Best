@@ -9,6 +9,8 @@ namespace Best.Data.Interfaces
     public interface ICampaings
     {
         IEnumerable<Campaing> GetCampaings { get; }
+        IEnumerable<Campaing> GetCampaingsByUserId(string user_id);
+        Campaing GetCampaingByIdForUser(string user_id, string campaing_id);
         Campaing GetCampaingById(string campaing_id);
     }
 }

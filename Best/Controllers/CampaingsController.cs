@@ -29,6 +29,10 @@ namespace Best.Controllers
             _signInManager = signInManager;
             _context = context;
         }
+        public IEnumerable<Campaing> GetCampaings()
+        {
+            return _campaings.GetCampaings;
+        }
         public IActionResult Index()
         {
             return View(_campaings.GetCampaings);
@@ -43,17 +47,17 @@ namespace Best.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CombCampaing createCampaing)
+        public async Task<IActionResult> Create(CombCampaing combCampaing)
         {
             if (!_signInManager.IsSignedIn(User))
             {
                 return RedirectToAction(nameof(Index));
             }
-            Campaing campaing = createCampaing.Campaing;
+            Campaing campaing = combCampaing.Campaing;
             try
             {
-                campaing.Topic = _topics.GetTopicById(createCampaing.Topic.Id);
-                campaing.BestUserId = createCampaing.BestUser.Id;
+                campaing.Topic = _topics.GetTopicById(combCampaing.Topic.Id);
+                campaing.BestUserId = combCampaing.BestUser.Id;
 
                 await _context.Campaing.AddAsync(campaing);
                 await _context.SaveChangesAsync();
@@ -62,7 +66,7 @@ namespace Best.Controllers
             }
             catch
             {
-                return View(campaing);
+                return View(combCampaing);
             }
         }
 
@@ -82,7 +86,7 @@ namespace Best.Controllers
 
             return View(Campaing);
         }
-        public async Task<IActionResult> Edit(string id)
+        public IActionResult Edit(string id)
         {
             if (!_signInManager.IsSignedIn(User))
             {
@@ -94,14 +98,14 @@ namespace Best.Controllers
                 return NotFound();
             }
 
-            var Campaing = await _context.Campaing.FindAsync(id);
+            var Campaing = _campaings.GetCampaingByIdForUser(_userManager.GetUserId(User), id);
             if (Campaing == null)
             {
                 return NotFound();
             }
-            CombCampaing createCampaing = new CombCampaing();//плохой код
-            createCampaing.Campaing = Campaing;
-            return View(createCampaing);
+            CombCampaing сombCampaing = new CombCampaing();//плохой код
+            сombCampaing.Campaing = Campaing;
+            return View(сombCampaing);
         }
 
         [HttpPost]
@@ -142,7 +146,7 @@ namespace Best.Controllers
             }
             return View(combCampaing);
         }
-        public async Task<IActionResult> Delete(string id)
+        public IActionResult Delete(string id)
         {
             if (!_signInManager.IsSignedIn(User))
             {
@@ -154,8 +158,7 @@ namespace Best.Controllers
                 return NotFound();
             }
 
-            var campaing = await _context.Campaing
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var campaing = _campaings.GetCampaingByIdForUser(_userManager.GetUserId(User), id);
             if (campaing == null)
             {
                 return NotFound();

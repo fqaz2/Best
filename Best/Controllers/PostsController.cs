@@ -8,16 +8,27 @@ using Microsoft.EntityFrameworkCore;
 using Best.Data;
 using Best.Data.Models;
 using Best.Data.Interfaces;
+using Best.Areas.Identity.Data;
+using Microsoft.AspNetCore.Identity;
+using Best.Data.Models.Combined;
 
 namespace Best.Controllers
 {
     public class PostsController : Controller
     {
+        private readonly UserManager<BestUser> _userManager;
+        private readonly SignInManager<BestUser> _signInManager;
         private readonly BestContent _context;
+        private readonly IPosts _posts;
+        private readonly ICampaings _campaings;
 
-        public PostsController(BestContent context)
+        public PostsController(BestContent context, IPosts posts, UserManager<BestUser> userManager, SignInManager<BestUser> signInManager, ICampaings campaings)
         {
             _context = context;
+            _posts = posts;
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _campaings = campaings;
         }
 
         // GET: Posts
@@ -51,6 +62,10 @@ namespace Best.Controllers
         // GET: Posts/Create
         public IActionResult Create()
         {
+            if (!_signInManager.IsSignedIn(User))
+            {
+                return RedirectToAction(nameof(Index));
+            }
             return View();
         }
 
@@ -59,31 +74,40 @@ namespace Best.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,text,mintext")] Post post)
+        public async Task<IActionResult> Create(CombPost combPost)
         {
             if (ModelState.IsValid)
             {
+                Post post = combPost.Post;
+                post.Campaing = _campaings.GetCampaingById(combPost.Campaing.Id);
                 _context.Add(post);
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(post);
+            return View(combPost);
         }
 
         // GET: Posts/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
+            if (!_signInManager.IsSignedIn(User))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            var post = await _context.Post.FindAsync(id);
-            if (post == null)
+            CombPost combPost = new CombPost();
+            combPost.Post = _posts.GetPostByIdForUser(_userManager.GetUserId(User), id);
+            if (combPost.Post == null)
             {
                 return NotFound();
             }
-            return View(post);
+            return View(combPost);
         }
 
         // POST: Posts/Edit/5
@@ -91,12 +115,14 @@ namespace Best.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,Name,text,mintext")] Post post)
+        public async Task<IActionResult> Edit(CombPost combPost)
         {
-            if (id != post.Id)
+            if (!_signInManager.IsSignedIn(User))
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
+            Post post = combPost.Post;
+            post.Campaing = _campaings.GetCampaingById(combPost.Campaing.Id);
 
             if (ModelState.IsValid)
             {
@@ -124,13 +150,18 @@ namespace Best.Controllers
         // GET: Posts/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
+            if (!_signInManager.IsSignedIn(User))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            var post = await _context.Post
-                .FirstOrDefaultAsync(m => m.Id == id);
+            Post post = _posts.GetPostByIdForUser(_userManager.GetUserId(User), id);
+
             if (post == null)
             {
                 return NotFound();

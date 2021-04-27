@@ -30,6 +30,7 @@ namespace Best
             services.AddDbContext<BestContent>(options => options.UseSqlServer(Configuration.GetConnectionString("BestContextConnection")));
             services.AddTransient<ICampaings, CampaingRepository>();
             services.AddTransient<ITopics, TopicRepository>();
+            services.AddTransient<IPosts, PostRepository>();
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
@@ -65,3 +66,4 @@ namespace Best
         }
     }
 }
+//1. Нужен рефакторинг кода

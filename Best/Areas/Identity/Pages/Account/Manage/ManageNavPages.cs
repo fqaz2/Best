@@ -24,6 +24,7 @@ namespace Best.Areas.Identity.Pages.Account.Manage
 
         public static string TwoFactorAuthentication => "TwoFactorAuthentication";
         public static string Campaings => "Campaings";
+        public static string Posts => "Posts";
 
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
 
@@ -41,6 +42,7 @@ namespace Best.Areas.Identity.Pages.Account.Manage
 
         public static string TwoFactorAuthenticationNavClass(ViewContext viewContext) => PageNavClass(viewContext, TwoFactorAuthentication);
         public static string CampaingsNavClass(ViewContext viewContext) => PageNavClass(viewContext, Campaings);
+        public static string PostsNavClass(ViewContext viewContext) => PageNavClass(viewContext, Posts);
 
         private static string PageNavClass(ViewContext viewContext, string page)
         {
