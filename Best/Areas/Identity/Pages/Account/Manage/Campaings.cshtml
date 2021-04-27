@@ -34,7 +34,7 @@
                         </td>
                         <td>@campaing.Rating</td>
                         <td>
-                            <a class="btn btn-primary" asp-controller="Post" asp-action="Create">Create post</a>
+                            <a class="btn btn-primary" asp-controller="Posts" asp-action="Create" asp-route-id="@campaing.Id">Create post</a>
                             <a class="btn btn-primary" asp-controller="Campaings" asp-action="Edit" asp-route-id="@campaing.Id">Edit</a>
                             <a class="btn btn-primary" asp-controller="Campaings" asp-action="Details" asp-route-id="@campaing.Id">Details</a>
                             <a class="btn btn-danger" asp-controller="Campaings" asp-action="Delete" asp-route-id="@campaing.Id">Delete</a>

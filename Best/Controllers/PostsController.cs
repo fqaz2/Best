@@ -60,13 +60,23 @@ namespace Best.Controllers
         }
 
         // GET: Posts/Create
-        public IActionResult Create()
+        public IActionResult Create(string id)
         {
             if (!_signInManager.IsSignedIn(User))
             {
                 return RedirectToAction(nameof(Index));
             }
-            return View();
+            if (id == null)
+            {
+                return View();
+            }
+            CombPost combPost = new CombPost();
+            combPost.Campaing = _campaings.GetCampaingByIdForUser(_userManager.GetUserId(User), id);
+            if (combPost == null)
+            {
+                return NotFound();
+            }
+            return View(combPost);
         }
 
         // POST: Posts/Create

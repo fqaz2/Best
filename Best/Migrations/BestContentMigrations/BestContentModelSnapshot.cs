@@ -87,6 +87,7 @@ namespace Best.Migrations.BestContentMigrations
             modelBuilder.Entity("Best.Data.Models.Campaing", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("BestUserId")
@@ -116,6 +117,7 @@ namespace Best.Migrations.BestContentMigrations
             modelBuilder.Entity("Best.Data.Models.Post", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CampaingId")
@@ -140,6 +142,7 @@ namespace Best.Migrations.BestContentMigrations
             modelBuilder.Entity("Best.Data.Models.Topic", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
