@@ -1,0 +1,49 @@
+﻿@page
+@using Best.Data.Models
+@using Best.Data.Interfaces
+@inject UserManager<BestUser> UserManager
+@{
+    ViewData["Title"] = "Users";
+    ViewData["ActivePage"] = ManageNavPages.Campaings;
+
+    BestUser user = await UserManager.GetUserAsync(User);
+    var isAdmin = await UserManager.IsInRoleAsync(user, "Administrator");
+}
+@if (isAdmin)
+{
+    <h4>@ViewData["Title"]</h4>
+    <div class="row">
+        <div class="col-md-12">
+            <a class="btn btn-primary" asp-controller="Campaings" asp-action="Create">Create</a>
+            <table class="table">
+                <thead class="thead-light text-center">
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Topic</th>
+                        <th scope="col">Rating</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="text-right">
+                    @foreach (var bestUser in UserManager.Users.ToList())
+                    {
+                        <tr>
+                            <td>@bestUser.Email</td>
+                            <td>@bestUser.UserName</td>
+                            <td>@bestUser.PhoneNumber</td>
+                            <td>
+                                @*<a class="btn btn-primary" asp-controller="Campaings" asp-action="Edit" asp-route-id="@Id">Edit</a>
+                                <a class="btn btn-primary" asp-controller="Campaings" asp-action="Details" asp-route-id="@Id">Details</a>
+                                <a class="btn btn-danger" asp-controller="Campaings" asp-action="Delete" asp-route-id="@campaing.Id">Delete</a>*@
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+}
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

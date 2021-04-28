@@ -59,8 +59,7 @@ namespace Best.Controllers
                 campaing.Topic = _topics.GetTopicById(combCampaing.Topic.Id);
                 campaing.BestUserId = combCampaing.BestUser.Id;
 
-                await _context.Campaing.AddAsync(campaing);
-                await _context.SaveChangesAsync();
+                await _campaings.Create(campaing);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -128,8 +127,7 @@ namespace Best.Controllers
             {
                 try
                 {
-                    _context.Update(campaing);
-                    await _context.SaveChangesAsync();
+                    await _campaings.Update(campaing);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -182,8 +180,7 @@ namespace Best.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            _context.Campaing.Remove(campaing);
-            await _context.SaveChangesAsync();
+            await _campaings.Delete(campaing);
             return RedirectToAction(nameof(Index));
         }
         private bool CampaingExists(string id)

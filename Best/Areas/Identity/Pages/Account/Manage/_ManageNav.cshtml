@@ -1,12 +1,20 @@
 ﻿@inject SignInManager<BestUser> SignInManager
+@inject UserManager<BestUser> UserManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+
+    BestUser user = await UserManager.GetUserAsync(User);
+    var isAdmin = await UserManager.IsInRoleAsync(user, "Administrator");
 }
 <ul class="nav nav-pills flex-column">
     <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Profile</a></li>
     <li class="nav-item"><a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">Email</a></li>
     <li class="nav-item"><a class="nav-link @ManageNavPages.CampaingsNavClass(ViewContext)" id="campaings" asp-page="./Campaings">My campaings</a></li>
     <li class="nav-item"><a class="nav-link @ManageNavPages.PostsNavClass(ViewContext)" id="posts" asp-page="./Posts">My posts</a></li>
+    @if (isAdmin)@*nice code*@
+    {
+        <li class="nav-item"><a class="nav-link @ManageNavPages.PostsNavClass(ViewContext)" id="posts" asp-page="./Posts">Users</a></li>
+    }
     <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Password</a></li>
     @if (hasExternalLogins)
     {

@@ -22,5 +22,46 @@ namespace Best.Data.Repository
 
         public IEnumerable<Post> GetPostsByUserId(string user_Id) => GetPosts.Where(p => p.Campaing.BestUserId == user_Id);
         public Post GetPostByIdForUser(string user_id, string post_id) => GetPostsByUserId(user_id).FirstOrDefault(p => p.Id == post_id);
+        //CRUD
+        public async Task<bool> Create(Post post)
+        {
+            bestContent.Post.Add(post);
+            var result = await bestContent.SaveChangesAsync();
+            if (result>0)
+            {
+                return true;
+            }
+            return false;
+        }
+        public async Task<bool> Update(Post post)
+        {
+            bestContent.Post.Update(post);
+            var result = await bestContent.SaveChangesAsync();
+            if (result > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+        public async Task<bool> Delete(Post post)
+        {
+            bestContent.Post.Remove(post);
+            var result = await bestContent.SaveChangesAsync();
+            if (result > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+        public async Task<bool> DeletePosts(IEnumerable<Post> posts)
+        {
+            bestContent.Post.RemoveRange(posts);
+            var result = await bestContent.SaveChangesAsync();
+            if (result > 0)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

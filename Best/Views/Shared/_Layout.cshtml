@@ -1,4 +1,13 @@
-﻿<!DOCTYPE html>
+﻿@inject UserManager<BestUser> UserManager
+@{
+    var signUser = await UserManager.GetUserAsync(User);
+    var isAdmin = false;
+    if (signUser != null)
+    {
+        isAdmin = await UserManager.IsInRoleAsync(signUser, "Administrator");
+    }
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -28,6 +37,15 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Posts" asp-action="Index">Posts</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Topics" asp-action="Index">Topics</a>
+                        </li>
+                        @if (isAdmin)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Admin panel</a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>

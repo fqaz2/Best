@@ -1,3 +1,4 @@
+using Best.Areas.Identity.Data;
 using Best.Data;
 using Best.Data.Interfaces;
 using Best.Data.Repository;
@@ -33,6 +34,18 @@ namespace Best
             services.AddTransient<IPosts, PostRepository>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddAuthentication()
+                .AddGoogle(Options =>
+            {
+                Options.ClientId = Configuration["Authentication:Google:ClientId"];
+                Options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+            })
+                .AddFacebook(Options =>
+                {
+                    Options.ClientId = Configuration["Authentication:Facebook:ClientId"];
+                    Options.ClientSecret = Configuration["Authentication:Facebook:ClientSecret"];
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

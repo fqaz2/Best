@@ -10,6 +10,6 @@ namespace Best.Areas.Identity.Data
     // Add profile data for application users by adding properties to the BestUser class
     public class BestUser : IdentityUser
     {
-        public virtual IEnumerable<Campaing> Campaings { get; }
+        public virtual IEnumerable<Campaing> Campaings { get; set; }
     }
 }

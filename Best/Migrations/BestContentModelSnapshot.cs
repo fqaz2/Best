@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Best.Migrations
 {
-    [DbContext(typeof(BestContext))]
-    partial class BestContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(BestContent))]
+    partial class BestContentModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -112,6 +112,31 @@ namespace Best.Migrations
                     b.HasIndex("TopicId");
 
                     b.ToTable("Campaing");
+                });
+
+            modelBuilder.Entity("Best.Data.Models.Post", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CampaingId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("mintext")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CampaingId");
+
+                    b.ToTable("Post");
                 });
 
             modelBuilder.Entity("Best.Data.Models.Topic", b =>
@@ -272,6 +297,13 @@ namespace Best.Migrations
                     b.HasOne("Best.Data.Models.Topic", "Topic")
                         .WithMany("Campaings")
                         .HasForeignKey("TopicId");
+                });
+
+            modelBuilder.Entity("Best.Data.Models.Post", b =>
+                {
+                    b.HasOne("Best.Data.Models.Campaing", "Campaing")
+                        .WithMany()
+                        .HasForeignKey("CampaingId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

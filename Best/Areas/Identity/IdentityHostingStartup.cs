@@ -28,6 +28,7 @@ namespace Best.Areas.Identity
                     options.Password.RequireNonAlphanumeric = false;
                     options.Password.RequireUppercase = false;
                 })
+                    .AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<BestContext>();
             });
         }

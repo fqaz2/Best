@@ -90,9 +90,7 @@ namespace Best.Controllers
             {
                 Post post = combPost.Post;
                 post.Campaing = _campaings.GetCampaingById(combPost.Campaing.Id);
-                _context.Add(post);
-
-                await _context.SaveChangesAsync();
+                await _posts.Create(post);
                 return RedirectToAction(nameof(Index));
             }
             return View(combPost);
@@ -138,8 +136,7 @@ namespace Best.Controllers
             {
                 try
                 {
-                    _context.Update(post);
-                    await _context.SaveChangesAsync();
+                    await _posts.Update(post);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -186,8 +183,7 @@ namespace Best.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var post = await _context.Post.FindAsync(id);
-            _context.Post.Remove(post);
-            await _context.SaveChangesAsync();
+            await _posts.Delete(post);
             return RedirectToAction(nameof(Index));
         }
 
