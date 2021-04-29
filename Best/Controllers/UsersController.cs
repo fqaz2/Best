@@ -63,6 +63,7 @@ namespace Best.Controllers
             {
                 bestUser = await _userManager.FindByIdAsync(bestUser.Id);
                 bestUser.Campaings = _campaings.GetCampaingsByUserId(bestUser.Id);
+                await _campaings.DeleteCampaingsByUser(bestUser);//need to create Repository for BestUser
                 await _userManager.DeleteAsync(bestUser);
 
                 if (bestUser.Id == _userManager.GetUserId(User))

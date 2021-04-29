@@ -1,4 +1,5 @@
-﻿using Best.Data.Interfaces;
+﻿using Best.Areas.Identity.Data;
+using Best.Data.Interfaces;
 using Best.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -49,6 +50,21 @@ namespace Best.Data.Repository
             await _posts.DeletePosts(_posts.GetPostsByCampaingId(campaing.Id));
 
             bestContent.Campaing.Remove(campaing);
+            var result = await bestContent.SaveChangesAsync();
+            if (result > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+        public async Task<bool> DeleteCampaingsByUser(BestUser bestUser)
+        {
+            var campaings = GetCampaingsByUserId(bestUser.Id);
+            foreach (var campaing in campaings)
+            {
+                await Delete(campaing);
+            }
+            
             var result = await bestContent.SaveChangesAsync();
             if (result > 0)
             {

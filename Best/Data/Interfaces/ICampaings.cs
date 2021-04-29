@@ -1,4 +1,6 @@
-﻿using Best.Data.Models;
+﻿using Best.Areas.Identity.Data;
+using Best.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +17,6 @@ namespace Best.Data.Interfaces
         Task<bool> Create(Campaing campaing);
         Task<bool> Update(Campaing campaing);
         Task<bool> Delete(Campaing campaing);
+        Task<bool> DeleteCampaingsByUser(BestUser bestUser);
     }
 }
