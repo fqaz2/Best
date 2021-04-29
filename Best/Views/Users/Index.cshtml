@@ -20,6 +20,7 @@
             <th>@Html.DisplayNameFor(model => model.UserName)</th>
             <th>@Html.DisplayNameFor(model => model.PhoneNumber)</th>
             <th>Role</th>
+            <th>@Html.DisplayNameFor(model => model.IsBlock)</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -35,10 +36,16 @@
                         @roles
                     }
                 </td>
+                <th>@Html.DisplayFor(u => user.IsBlock)</th>
                 <td>
                     <a class="btn btn-primary" asp-action="Details" asp-route-id="@user.Id">Details</a>
                     @if (isSign && (IsAdmin || SignUser == user))
                     {
+                        @if (IsAdmin)
+                        {
+                            <a class="btn btn-danger" asp-action="AddRole" asp-route-id="@user.Id">Add role</a>
+                        }
+                        <a class="btn btn-warning" asp-action="Block" asp-route-id="@user.Id">Block/Unblock</a>
                         <a class="btn btn-danger" asp-action="Delete" asp-route-id="@user.Id">Delete</a>
                     }
                 </td>

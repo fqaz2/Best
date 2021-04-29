@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Best.Migrations
 {
     [DbContext(typeof(BestContent))]
-    [Migration("20210428150058_Initial-Create")]
-    partial class InitialCreate
+    [Migration("20210429090435_create")]
+    partial class create
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -38,6 +38,9 @@ namespace Best.Migrations
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsBlock")
                         .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")

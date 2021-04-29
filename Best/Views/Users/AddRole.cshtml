@@ -1,0 +1,55 @@
+﻿@model BestUser
+@inject ICampaings Campaings
+@inject RoleManager<IdentityRole> RoleManager
+@{
+    ViewData["Title"] = "AddRole";
+}
+
+<h1>AddRole</h1>
+
+
+
+<div>
+    <h4>Topic</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Campaings)
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (var campaing in Campaings.GetCampaingsByUserId(Model.Id))
+            {
+                <a asp-controller="Campaings" asp-action="Details" asp-route-id="@campaing.Id">@campaing.Name</a>
+            }
+        </dd>
+    </dl>
+    <form asp-action="AddRole">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Block/Unblock" class="btn btn-warning" />
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

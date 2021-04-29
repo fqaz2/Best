@@ -50,6 +50,10 @@ namespace Best.Controllers
         // GET: UsersController/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
+            if (!(_signInManager.IsSignedIn(User) && (_userManager.GetUserId(User) == id || await IsAdmin())))
+            {
+                return NotFound();
+            }
             BestUser bestUser = await _userManager.FindByIdAsync(id);
             return View(bestUser);
         }
@@ -74,6 +78,82 @@ namespace Best.Controllers
                 return RedirectToAction(nameof(Index));
             }
             catch(Exception ex)
+            {
+                return View();
+            }
+        }
+        public async Task<IActionResult> block(string id)
+        {
+            if (!(_signInManager.IsSignedIn(User) && ( _userManager.GetUserId(User) == id || await IsAdmin())))
+            {
+                return NotFound();
+            }
+            BestUser bestUser = await _userManager.FindByIdAsync(id);
+            return View(bestUser);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> block(BestUser bestUser)
+        {
+            try
+            {
+                bestUser = await _userManager.FindByIdAsync(bestUser.Id);
+                bestUser.Campaings = _campaings.GetCampaingsByUserId(bestUser.Id);
+                if (bestUser.IsBlock)
+                {
+                    bestUser.IsBlock = false;
+                    await _userManager.SetLockoutEndDateAsync(bestUser, DateTime.Now);
+                }
+                else
+                {
+                    await _userManager.SetLockoutEndDateAsync(bestUser, new DateTime(9999, 12, 30));
+                    if (bestUser.Id == _userManager.GetUserId(User))
+                    {
+                        await _signInManager.SignOutAsync();
+                    }
+                }
+                await _userManager.UpdateAsync(bestUser);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                return View();
+            }
+        }
+        public async Task<IActionResult> AddRole(string id)
+        {
+            if (!(_signInManager.IsSignedIn(User) && await IsAdmin()))
+            {
+                return NotFound();
+            }
+            BestUser bestUser = await _userManager.FindByIdAsync(id);
+            return View(bestUser);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddRole(BestUser bestUser)
+        {
+            try
+            {
+                bestUser = await _userManager.FindByIdAsync(bestUser.Id);
+                bestUser.Campaings = _campaings.GetCampaingsByUserId(bestUser.Id);
+                if (bestUser.IsBlock)
+                {
+                    bestUser.IsBlock = false;
+                    await _userManager.SetLockoutEndDateAsync(bestUser, DateTime.Now);
+                }
+                else
+                {
+                    await _userManager.SetLockoutEndDateAsync(bestUser, new DateTime(9999, 12, 30));
+                    if (bestUser.Id == _userManager.GetUserId(User))
+                    {
+                        await _signInManager.SignOutAsync();
+                    }
+                }
+                await _userManager.UpdateAsync(bestUser);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
             {
                 return View();
             }

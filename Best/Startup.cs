@@ -5,6 +5,7 @@ using Best.Data.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -76,7 +77,13 @@ namespace Best
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+            //add role administrator
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                BestContent content = scope.ServiceProvider.GetRequiredService<BestContent>();
+                DBObjects.Initial(content);
+            }
         }
     }
 }
-//1. Нужен рефакторинг кода
+//1. need refactoring code
