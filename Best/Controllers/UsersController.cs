@@ -2,6 +2,7 @@
 using Best.Data;
 using Best.Data.Interfaces;
 using Best.Data.Models;
+using Best.Data.Models.Combined;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -126,37 +127,19 @@ namespace Best.Controllers
             {
                 return NotFound();
             }
-            BestUser bestUser = await _userManager.FindByIdAsync(id);
-            return View(bestUser);
+            CombUser combUser = new CombUser();
+            combUser.BestUser = await _userManager.FindByIdAsync(id);
+            combUser.BestUser.Campaings = _campaings.GetCampaingsByUserId(id);
+            return View(combUser);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddRole(BestUser bestUser)
+        public async Task<IActionResult> AddRole(CombUser combUser)
         {
-            try
-            {
-                bestUser = await _userManager.FindByIdAsync(bestUser.Id);
-                bestUser.Campaings = _campaings.GetCampaingsByUserId(bestUser.Id);
-                if (bestUser.IsBlock)
-                {
-                    bestUser.IsBlock = false;
-                    await _userManager.SetLockoutEndDateAsync(bestUser, DateTime.Now);
-                }
-                else
-                {
-                    await _userManager.SetLockoutEndDateAsync(bestUser, new DateTime(9999, 12, 30));
-                    if (bestUser.Id == _userManager.GetUserId(User))
-                    {
-                        await _signInManager.SignOutAsync();
-                    }
-                }
-                await _userManager.UpdateAsync(bestUser);
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception ex)
-            {
-                return View();
-            }
+            BestUser bestUser = await _userManager.FindByIdAsync(combUser.BestUser.Id);
+            IdentityRole role = await _roleManager.FindByIdAsync(combUser.IdentityRole.Id);
+            await _userManager.AddToRoleAsync( bestUser, role.Name);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

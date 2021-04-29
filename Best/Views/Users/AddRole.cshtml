@@ -1,4 +1,4 @@
-﻿@model BestUser
+﻿@model CombUser
 @inject ICampaings Campaings
 @inject RoleManager<IdentityRole> RoleManager
 @{
@@ -14,42 +14,53 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UserName)
+            @Html.DisplayNameFor(model => model.BestUser.UserName)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.UserName)
+            @Html.DisplayFor(model => model.BestUser.UserName)
         </dd>
     </dl>
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
+            @Html.DisplayNameFor(model => model.BestUser.Email)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Email)
+            @Html.DisplayFor(model => model.BestUser.Email)
         </dd>
     </dl>
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PhoneNumber)
+            @Html.DisplayNameFor(model => model.BestUser.PhoneNumber)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PhoneNumber)
+            @Html.DisplayFor(model => model.BestUser.PhoneNumber)
         </dd>
     </dl>
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Campaings)
+            @Html.DisplayNameFor(model => model.BestUser.Campaings)
         </dt>
         <dd class="col-sm-10">
-            @foreach (var campaing in Campaings.GetCampaingsByUserId(Model.Id))
+            @foreach (var campaing in Campaings.GetCampaingsByUserId(Model.BestUser.Id))
             {
                 <a asp-controller="Campaings" asp-action="Details" asp-route-id="@campaing.Id">@campaing.Name</a>
             }
         </dd>
     </dl>
     <form asp-action="AddRole">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Block/Unblock" class="btn btn-warning" />
+        <div class="form-group">
+            <label asp-for="IdentityRole" class="control-label"></label>
+            <select class="custom-select" asp-for="IdentityRole.Id" required>
+                @foreach (var role in RoleManager.Roles)
+                {
+                    <option value="@role.Id">@role.Name</option>
+                }
+            </select>
+            <div class="invalid-feedback">Example invalid custom select feedback</div>
+        </div>
+
+        <input type="hidden" asp-for="BestUser.Id" />
+        <input type="submit" value="Add role" class="btn btn-warning" />
         <a asp-action="Index">Back to List</a>
     </form>
 </div>

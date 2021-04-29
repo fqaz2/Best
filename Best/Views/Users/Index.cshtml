@@ -43,7 +43,7 @@
                     {
                         @if (IsAdmin)
                         {
-                            <a class="btn btn-danger" asp-action="AddRole" asp-route-id="@user.Id">Add role</a>
+                            <a class="btn btn-warning" asp-action="AddRole" asp-route-id="@user.Id">Add role</a>
                         }
                         <a class="btn btn-warning" asp-action="Block" asp-route-id="@user.Id">Block/Unblock</a>
                         <a class="btn btn-danger" asp-action="Delete" asp-route-id="@user.Id">Delete</a>
