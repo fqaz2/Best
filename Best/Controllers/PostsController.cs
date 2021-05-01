@@ -10,7 +10,6 @@ using Best.Data.Models;
 using Best.Data.Interfaces;
 using Best.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
-using Best.Data.Models.Combined;
 
 namespace Best.Controllers
 {
@@ -21,14 +20,16 @@ namespace Best.Controllers
         private readonly BestContent _context;
         private readonly IPosts _posts;
         private readonly ICampaings _campaings;
+        private readonly IBestUsers _bestUsers;
 
-        public PostsController(BestContent context, IPosts posts, UserManager<BestUser> userManager, SignInManager<BestUser> signInManager, ICampaings campaings)
+        public PostsController(BestContent context, IPosts posts, UserManager<BestUser> userManager, SignInManager<BestUser> signInManager, ICampaings campaings, IBestUsers bestUsers)
         {
             _context = context;
             _posts = posts;
             _userManager = userManager;
             _signInManager = signInManager;
             _campaings = campaings;
+            _bestUsers = bestUsers;
         }
 
         // GET: Posts
@@ -60,7 +61,7 @@ namespace Best.Controllers
         }
 
         // GET: Posts/Create
-        public IActionResult Create(string id)
+        public async Task<IActionResult> Create(string id)
         {
             if (!_signInManager.IsSignedIn(User))
             {
@@ -70,13 +71,13 @@ namespace Best.Controllers
             {
                 return View();
             }
-            CombPost combPost = new CombPost();
-            combPost.Campaing = _campaings.GetCampaingByIdForUser(_userManager.GetUserId(User), id);
-            if (combPost == null)
+            Post post = new Post();
+            post.Campaing = _campaings.GetCampaingByIdForUser(_userManager.GetUserId(User), id);
+            if (post == null)
             {
                 return NotFound();
             }
-            return View(combPost);
+            return View(post);
         }
 
         // POST: Posts/Create
@@ -84,16 +85,16 @@ namespace Best.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CombPost combPost)
+        public async Task<IActionResult> Create(Post post)
         {
             if (ModelState.IsValid)
             {
-                Post post = combPost.Post;
-                post.Campaing = _campaings.GetCampaingById(combPost.Campaing.Id);
+                post.Campaing = _campaings.GetCampaingById(post.Campaing.Id);
+                post.BestUser = await _userManager.FindByIdAsync(post.BestUser.Id);
                 await _posts.Create(post);
                 return RedirectToAction(nameof(Index));
             }
-            return View(combPost);
+            return View(post);
         }
 
         // GET: Posts/Edit/5
@@ -103,19 +104,19 @@ namespace Best.Controllers
             {
                 return RedirectToAction(nameof(Index));
             }
-
             if (id == null)
             {
                 return NotFound();
             }
 
-            CombPost combPost = new CombPost();
-            combPost.Post = _posts.GetPostByIdForUser(_userManager.GetUserId(User), id);
-            if (combPost.Post == null)
+            Post post = new Post();
+            post = _posts.GetPostByIdForUser(_userManager.GetUserId(User), id);
+
+            if (post == null)
             {
                 return NotFound();
             }
-            return View(combPost);
+            return View(post);
         }
 
         // POST: Posts/Edit/5
@@ -123,32 +124,19 @@ namespace Best.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(CombPost combPost)
+        public async Task<IActionResult> Edit(Post post)
         {
             if (!_signInManager.IsSignedIn(User))
             {
                 return RedirectToAction(nameof(Index));
             }
-            Post post = combPost.Post;
-            post.Campaing = _campaings.GetCampaingById(combPost.Campaing.Id);
+
+            post.Campaing = await _context.Campaing.FirstOrDefaultAsync(c => c.Id == post.Campaing.Id);
+            post.BestUser = await _context.BestUser.FirstOrDefaultAsync(u => u.Id == post.BestUser.Id);
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    await _posts.Update(post);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PostExists(post.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                await _posts.Update(post);
                 return RedirectToAction(nameof(Index));
             }
             return View(post);

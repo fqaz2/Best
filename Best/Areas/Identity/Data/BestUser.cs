@@ -12,5 +12,6 @@ namespace Best.Areas.Identity.Data
     {
         public bool IsBlock { get; set; }
         public virtual IEnumerable<Campaing> Campaings { get; set; }
+        public virtual IEnumerable<Post> Posts { get; set; }
     }
 }

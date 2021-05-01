@@ -14,9 +14,9 @@ namespace Best.Data.Interfaces
         IEnumerable<Campaing> GetCampaingsByUserId(string user_id);
         Campaing GetCampaingByIdForUser(string user_id, string campaing_id);
         Campaing GetCampaingById(string campaing_id);
-        Task<bool> Create(Campaing campaing);
-        Task<bool> Update(Campaing campaing);
-        Task<bool> Delete(Campaing campaing);
-        Task<bool> DeleteCampaingsByUser(BestUser bestUser);
+        Task<int> Create(Campaing campaing);
+        Task<int> Update(Campaing campaing);
+        Task<int> Delete(Campaing campaing);
+        Task<int> DeleteCampaingsByUserId(string user_id);
     }
 }

@@ -18,59 +18,41 @@ namespace Best.Data.Repository
             this.bestContent = bestContent;
             _posts = posts;
         }
-        public IEnumerable<Campaing> GetCampaings => bestContent.Campaing.Include(t => t.Topic);
+        public IEnumerable<Campaing> GetCampaings => bestContent.Campaing.Include(t => t.Topic).Include(p => p.Posts).Include(cc => cc.CampaingCarousel).Include(u => u.BestUser);
 
-        public Campaing GetCampaingById(string campaing_id) => bestContent.Campaing.FirstOrDefault(c => c.Id == campaing_id);
+        public Campaing GetCampaingById(string campaing_id) => GetCampaings.FirstOrDefault(c => c.Id == campaing_id);
 
-        public IEnumerable<Campaing> GetCampaingsByUserId(string user_id) => GetCampaings.Where(c => c.BestUserId == user_id);
+        public IEnumerable<Campaing> GetCampaingsByUserId(string user_id) => GetCampaings.Where(c => c.BestUser.Id == user_id);
         public Campaing GetCampaingByIdForUser(string user_id, string campaing_id) => GetCampaingsByUserId(user_id).FirstOrDefault(c => c.Id == campaing_id);
         //CRUD
-        public async Task<bool> Create(Campaing campaing)
+        public async Task<int> Create(Campaing campaing)
         {
             bestContent.Campaing.Add(campaing);
-            var result = await bestContent.SaveChangesAsync();
-            if (result > 0)
-            {
-                return true;
-            }
-            return false;
+            return await bestContent.SaveChangesAsync();
         }
-        public async Task<bool> Update(Campaing campaing)
+        public async Task<int> Update(Campaing campaing)
         {
             bestContent.Campaing.Update(campaing);
-            var result = await bestContent.SaveChangesAsync();
-            if (result > 0)
-            {
-                return true;
-            }
-            return false;
+            return await bestContent.SaveChangesAsync();
         }
-        public async Task<bool> Delete(Campaing campaing)
+        public async Task<int> Delete(Campaing campaing)
         {
-            await _posts.DeletePosts(_posts.GetPostsByCampaingId(campaing.Id));
+            await _posts.DeletePostsByCampaingId(campaing.Id);
+            bestContent.CampaingCarousel.RemoveRange(campaing.CampaingCarousel);
 
+            campaing = GetCampaingById(campaing.Id);
             bestContent.Campaing.Remove(campaing);
-            var result = await bestContent.SaveChangesAsync();
-            if (result > 0)
-            {
-                return true;
-            }
-            return false;
+            return await bestContent.SaveChangesAsync();
         }
-        public async Task<bool> DeleteCampaingsByUser(BestUser bestUser)
+        public async Task<int> DeleteCampaingsByUserId(string user_id)
         {
-            var campaings = GetCampaingsByUserId(bestUser.Id);
+            var campaings = GetCampaingsByUserId(user_id).ToList();
+            int result = 0;
             foreach (var campaing in campaings)
             {
-                await Delete(campaing);
+                result += await Delete(campaing);
             }
-            
-            var result = await bestContent.SaveChangesAsync();
-            if (result > 0)
-            {
-                return true;
-            }
-            return false;
+            return result;
         }
     }
 }

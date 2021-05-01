@@ -5,11 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Best.Data.Models.Combined
+namespace Best.Data.Models.Сombined
 {
-    public class CombUser
+    public class CombUserRole
     {
-        public BestUser BestUser { get; set; }
-        public IdentityRole IdentityRole { get; set; }
+        public virtual BestUser BestUser { get; set; }
+        public virtual IdentityRole IdentityRole { get; set; }
     }
 }

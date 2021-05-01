@@ -15,53 +15,36 @@ namespace Best.Data.Repository
         {
             this.bestContent = bestContent;
         }
-        public IEnumerable<Post> GetPosts => bestContent.Post.Include(c => c.Campaing);
-
+        public IEnumerable<Post> GetPosts => bestContent.Post.Include(c => c.Campaing).Include(u => u.BestUser);
         public Post GetPostById(string post_id) => GetPosts.FirstOrDefault(p => p.Id == post_id);
-        public IEnumerable<Post> GetPostsByCampaingId(string campaing_Id) => bestContent.Post.Where(p => p.Campaing.Id == campaing_Id);
-
-        public IEnumerable<Post> GetPostsByUserId(string user_Id) => GetPosts.Where(p => p.Campaing.BestUserId == user_Id);
+        public IEnumerable<Post> GetPostsByCampaingId(string campaing_Id) => GetPosts.Where(p => p.Campaing.Id == campaing_Id);
+        public IEnumerable<Post> GetPostsByUserId(string user_Id) => GetPosts.Where(p => p.Campaing.BestUser.Id == user_Id);
         public Post GetPostByIdForUser(string user_id, string post_id) => GetPostsByUserId(user_id).FirstOrDefault(p => p.Id == post_id);
         //CRUD
-        public async Task<bool> Create(Post post)
+        public async Task<int> Create(Post post)
         {
             bestContent.Post.Add(post);
-            var result = await bestContent.SaveChangesAsync();
-            if (result>0)
-            {
-                return true;
-            }
-            return false;
+            return await bestContent.SaveChangesAsync();
         }
-        public async Task<bool> Update(Post post)
+        public async Task<int> Update(Post post)
         {
             bestContent.Post.Update(post);
-            var result = await bestContent.SaveChangesAsync();
-            if (result > 0)
-            {
-                return true;
-            }
-            return false;
+            return await bestContent.SaveChangesAsync();
         }
-        public async Task<bool> Delete(Post post)
+        public async Task<int> Delete(Post post)
         {
             bestContent.Post.Remove(post);
-            var result = await bestContent.SaveChangesAsync();
-            if (result > 0)
-            {
-                return true;
-            }
-            return false;
+            return await bestContent.SaveChangesAsync();
         }
-        public async Task<bool> DeletePosts(IEnumerable<Post> posts)
+        public async Task<int> DeletePostsByCampaingId(string campaing_Id)
         {
-            bestContent.Post.RemoveRange(posts);
-            var result = await bestContent.SaveChangesAsync();
-            if (result > 0)
+            var posts = GetPostsByCampaingId(campaing_Id).ToList();
+            int result = 0;
+            foreach (var post in posts)
             {
-                return true;
+                result += await Delete(post);
             }
-            return false;
+            return result;
         }
     }
 }

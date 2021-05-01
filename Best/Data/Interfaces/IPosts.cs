@@ -13,9 +13,9 @@ namespace Best.Data.Interfaces
         IEnumerable<Post> GetPostsByUserId(string user_Id);
         Post GetPostById(string post_id);
         Post GetPostByIdForUser(string user_id, string post_id);
-        Task<bool> Create(Post post);
-        Task<bool> Update(Post post);
-        Task<bool> Delete(Post post);
-        Task<bool> DeletePosts(IEnumerable<Post> posts);
+        Task<int> Create(Post post);
+        Task<int> Update(Post post);
+        Task<int> Delete(Post post);
+        Task<int> DeletePostsByCampaingId(string campaing_Id);
     }
 }

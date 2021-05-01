@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Best.Migrations
 {
-    public partial class create : Migration
+    public partial class addV1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -173,8 +173,9 @@ namespace Best.Migrations
                     Name = table.Column<string>(nullable: true),
                     Rating = table.Column<int>(nullable: false),
                     Bonuses = table.Column<string>(nullable: true),
-                    BestUserId = table.Column<string>(nullable: true),
-                    TopicId = table.Column<string>(nullable: true)
+                    TitleImg = table.Column<string>(nullable: true),
+                    TopicId = table.Column<string>(nullable: true),
+                    BestUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -194,6 +195,26 @@ namespace Best.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CampaingCarousel",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Img = table.Column<string>(nullable: true),
+                    Alt = table.Column<string>(nullable: true),
+                    CampaingId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CampaingCarousel", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CampaingCarousel_Campaing_CampaingId",
+                        column: x => x.CampaingId,
+                        principalTable: "Campaing",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Post",
                 columns: table => new
                 {
@@ -201,11 +222,18 @@ namespace Best.Migrations
                     Name = table.Column<string>(nullable: true),
                     text = table.Column<string>(nullable: true),
                     mintext = table.Column<string>(nullable: true),
-                    CampaingId = table.Column<string>(nullable: true)
+                    CampaingId = table.Column<string>(nullable: true),
+                    BestUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Post", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Post_AspNetUsers_BestUserId",
+                        column: x => x.BestUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Post_Campaing_CampaingId",
                         column: x => x.CampaingId,
@@ -264,6 +292,16 @@ namespace Best.Migrations
                 column: "TopicId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CampaingCarousel_CampaingId",
+                table: "CampaingCarousel",
+                column: "CampaingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Post_BestUserId",
+                table: "Post",
+                column: "BestUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Post_CampaingId",
                 table: "Post",
                 column: "CampaingId");
@@ -285,6 +323,9 @@ namespace Best.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "CampaingCarousel");
 
             migrationBuilder.DropTable(
                 name: "Post");

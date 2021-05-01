@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Best.Migrations
 {
     [DbContext(typeof(BestContent))]
-    [Migration("20210429090435_create")]
-    partial class create
+    [Migration("20210501141717_addV1")]
+    partial class addV1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -107,6 +107,9 @@ namespace Best.Migrations
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
+                    b.Property<string>("TitleImg")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("TopicId")
                         .HasColumnType("nvarchar(450)");
 
@@ -119,10 +122,35 @@ namespace Best.Migrations
                     b.ToTable("Campaing");
                 });
 
+            modelBuilder.Entity("Best.Data.Models.CampaingCarousel", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Alt")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CampaingId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Img")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CampaingId");
+
+                    b.ToTable("CampaingCarousel");
+                });
+
             modelBuilder.Entity("Best.Data.Models.Post", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("BestUserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CampaingId")
@@ -138,6 +166,8 @@ namespace Best.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BestUserId");
 
                     b.HasIndex("CampaingId");
 
@@ -295,7 +325,7 @@ namespace Best.Migrations
 
             modelBuilder.Entity("Best.Data.Models.Campaing", b =>
                 {
-                    b.HasOne("Best.Areas.Identity.Data.BestUser", null)
+                    b.HasOne("Best.Areas.Identity.Data.BestUser", "BestUser")
                         .WithMany("Campaings")
                         .HasForeignKey("BestUserId");
 
@@ -304,10 +334,21 @@ namespace Best.Migrations
                         .HasForeignKey("TopicId");
                 });
 
-            modelBuilder.Entity("Best.Data.Models.Post", b =>
+            modelBuilder.Entity("Best.Data.Models.CampaingCarousel", b =>
                 {
                     b.HasOne("Best.Data.Models.Campaing", "Campaing")
-                        .WithMany()
+                        .WithMany("CampaingCarousel")
+                        .HasForeignKey("CampaingId");
+                });
+
+            modelBuilder.Entity("Best.Data.Models.Post", b =>
+                {
+                    b.HasOne("Best.Areas.Identity.Data.BestUser", "BestUser")
+                        .WithMany("Posts")
+                        .HasForeignKey("BestUserId");
+
+                    b.HasOne("Best.Data.Models.Campaing", "Campaing")
+                        .WithMany("Posts")
                         .HasForeignKey("CampaingId");
                 });
 

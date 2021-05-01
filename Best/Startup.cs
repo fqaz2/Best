@@ -33,6 +33,7 @@ namespace Best
             services.AddTransient<ICampaings, CampaingRepository>();
             services.AddTransient<ITopics, TopicRepository>();
             services.AddTransient<IPosts, PostRepository>();
+            services.AddTransient<IBestUsers, BestUserRepository>();
             services.AddControllersWithViews();
             services.AddRazorPages();
 

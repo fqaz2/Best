@@ -1,4 +1,4 @@
-﻿@model CombCampaing
+﻿@model Campaing
 
 @{
     ViewData["Title"] = "Edit";
@@ -10,31 +10,31 @@
 
 <h1>Edit</h1>
 
-<h4>Topic</h4>
+<h4>Campaing</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input asp-for="Campaing.Id" />
-            <input asp-for="Campaing.BestUserId" />
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="BestUser.Id" />
             <div class="form-group">
-                <label asp-for="Campaing.Name" class="control-label"></label>
-                <input asp-for="Campaing.Name" class="form-control" />
-                <span asp-validation-for="Campaing.Name" class="text-danger"></span>
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Campaing.Rating" class="control-label"></label>
-                <input asp-for="Campaing.Rating" class="form-control" />
-                <span asp-validation-for="Campaing.Rating" class="text-danger"></span>
+                <label asp-for="Rating" class="control-label"></label>
+                <input asp-for="Rating" class="form-control" />
+                <span asp-validation-for="Rating" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Campaing.Bonuses" class="control-label"></label>
-                <input asp-for="Campaing.Bonuses" class="form-control" />
-                <span asp-validation-for="Campaing.Bonuses" class="text-danger"></span>
+                <label asp-for="Bonuses" class="control-label"></label>
+                <input asp-for="Bonuses" class="form-control" />
+                <span asp-validation-for="Bonuses" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Campaing.Topic" class="control-label"></label>
+                <label asp-for="Topic" class="control-label"></label>
                 <select class="custom-select" asp-for="Topic.Id" required>
                     @foreach (var topic in topics.GetTopics)
                     {

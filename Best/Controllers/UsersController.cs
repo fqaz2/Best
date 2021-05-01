@@ -2,7 +2,7 @@
 using Best.Data;
 using Best.Data.Interfaces;
 using Best.Data.Models;
-using Best.Data.Models.Combined;
+using Best.Data.Models.Сombined;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -19,14 +19,18 @@ namespace Best.Controllers
         private readonly SignInManager<BestUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ICampaings _campaings;
+        private readonly IPosts _posts;
+        private readonly IBestUsers _bestUser;
         private readonly BestContent _context;
-        public UsersController(UserManager<BestUser> userManager, SignInManager<BestUser> signInManager, RoleManager<IdentityRole> roleManager, BestContent context, ICampaings campaings)
+        public UsersController(UserManager<BestUser> userManager, SignInManager<BestUser> signInManager, RoleManager<IdentityRole> roleManager, BestContent context, ICampaings campaings, IPosts posts, IBestUsers bestUser)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _context = context;
             _campaings = campaings;
+            _posts = posts;
+            _bestUser = bestUser;
         }
         public async Task<bool> IsAdmin()
         {
@@ -66,10 +70,8 @@ namespace Best.Controllers
         {
             try
             {
-                bestUser = await _userManager.FindByIdAsync(bestUser.Id);
-                bestUser.Campaings = _campaings.GetCampaingsByUserId(bestUser.Id);
-                await _campaings.DeleteCampaingsByUser(bestUser);//need to create Repository for BestUser
-                await _userManager.DeleteAsync(bestUser);
+                bestUser = _bestUser.GetUserById(bestUser.Id);
+                await _bestUser.Delete(bestUser);
 
                 if (bestUser.Id == _userManager.GetUserId(User))
                 {
@@ -127,17 +129,17 @@ namespace Best.Controllers
             {
                 return NotFound();
             }
-            CombUser combUser = new CombUser();
-            combUser.BestUser = await _userManager.FindByIdAsync(id);
-            combUser.BestUser.Campaings = _campaings.GetCampaingsByUserId(id);
-            return View(combUser);
+            BestUser bestUser = await _userManager.FindByIdAsync(id);
+            bestUser.Campaings = _campaings.GetCampaingsByUserId(id);
+            bestUser.Posts = _posts.GetPostsByUserId(id);
+            return View(bestUser);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddRole(CombUser combUser)
+        public async Task<IActionResult> AddRole(CombUserRole combUserRole)
         {
-            BestUser bestUser = await _userManager.FindByIdAsync(combUser.BestUser.Id);
-            IdentityRole role = await _roleManager.FindByIdAsync(combUser.IdentityRole.Id);
+            BestUser bestUser = await _userManager.FindByIdAsync(combUserRole.BestUser.Id);
+            IdentityRole role = await _roleManager.FindByIdAsync(combUserRole.IdentityRole.Id);
             await _userManager.AddToRoleAsync( bestUser, role.Name);
             return RedirectToAction(nameof(Index));
         }

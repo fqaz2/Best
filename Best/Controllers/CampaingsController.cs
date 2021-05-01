@@ -2,7 +2,6 @@
 using Best.Data;
 using Best.Data.Interfaces;
 using Best.Data.Models;
-using Best.Data.Models.Combined;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -47,26 +46,17 @@ namespace Best.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CombCampaing combCampaing)
+        public async Task<IActionResult> Create(Campaing campaing)
         {
             if (!_signInManager.IsSignedIn(User))
             {
                 return RedirectToAction(nameof(Index));
             }
-            Campaing campaing = combCampaing.Campaing;
-            try
-            {
-                campaing.Topic = _topics.GetTopicById(combCampaing.Topic.Id);
-                campaing.BestUserId = combCampaing.BestUser.Id;
-
-                await _campaings.Create(campaing);
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View(combCampaing);
-            }
+            campaing.Topic = _topics.GetTopicById(campaing.Topic.Id);
+            campaing.BestUser = await _userManager.FindByIdAsync(campaing.BestUser.Id);
+            
+            await _campaings.Create(campaing);
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Details(string id)
@@ -76,8 +66,7 @@ namespace Best.Controllers
                 return NotFound();
             }
 
-            var Campaing = await _context.Campaing
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var Campaing = _campaings.GetCampaingById(id);
             if (Campaing == null)
             {
                 return NotFound();
@@ -97,52 +86,32 @@ namespace Best.Controllers
                 return NotFound();
             }
 
-            var Campaing = _campaings.GetCampaingByIdForUser(_userManager.GetUserId(User), id);
-            if (Campaing == null)
+            var campaing = _campaings.GetCampaingByIdForUser(_userManager.GetUserId(User), id);
+            if (campaing == null)
             {
                 return NotFound();
             }
-            CombCampaing сombCampaing = new CombCampaing();//плохой код
-            сombCampaing.Campaing = Campaing;
-            return View(сombCampaing);
+            return View(campaing);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(CombCampaing combCampaing)
+        public async Task<IActionResult> Edit(Campaing campaing)
         {
             if (!_signInManager.IsSignedIn(User))
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            combCampaing.Topic = _topics.GetTopicById(combCampaing.Topic.Id);
-            Campaing campaing = combCampaing.Campaing;
-            campaing.Topic = combCampaing.Topic;
-            IEnumerable<Campaing> camp = from c in _context.Campaing //select all campaing without input campaing
-                                  where c.Id != campaing.Id 
-                                  select c; 
+            campaing.Topic = _topics.GetTopicById(campaing.Topic.Id);
+            campaing.BestUser = await _userManager.FindByIdAsync(campaing.BestUser.Id);
+            await _campaings.Update(campaing);
 
-            if (ModelState.IsValid && !camp.Any(c => c.Name == campaing.Name))
+            if (ModelState.IsValid)
             {
-                try
-                {
-                    await _campaings.Update(campaing);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CampaingExists(campaing.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
                 return RedirectToAction(nameof(Index));
             }
-            return View(combCampaing);
+            return View(campaing);
         }
         public IActionResult Delete(string id)
         {
@@ -173,9 +142,9 @@ namespace Best.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var campaing = await _context.Campaing.FindAsync(id);
+            var campaing = _campaings.GetCampaingById(id);
 
-            if (campaing.BestUserId != _userManager.GetUserId(User))
+            if (campaing.BestUser.Id != _userManager.GetUserId(User))
             {
                 return RedirectToAction(nameof(Index));
             }

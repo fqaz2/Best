@@ -16,7 +16,7 @@ namespace Best.Areas.Identity
         public void Configure(IWebHostBuilder builder)
         {
             builder.ConfigureServices((context, services) => {
-                services.AddDbContext<BestContext>(options =>
+                services.AddDbContext<BestContent>(options =>
                     options.UseSqlServer(
                         context.Configuration.GetConnectionString("BestContextConnection")));
 
@@ -29,7 +29,7 @@ namespace Best.Areas.Identity
                     options.Password.RequireUppercase = false;
                 })
                     .AddRoles<IdentityRole>()
-                    .AddEntityFrameworkStores<BestContext>();
+                    .AddEntityFrameworkStores<BestContent>();
             });
         }
     }

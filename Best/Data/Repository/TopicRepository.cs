@@ -1,5 +1,6 @@
 ﻿using Best.Data.Interfaces;
 using Best.Data.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace Best.Data.Repository
         {
             this.bestContent = bestContent;
         }
-        public IEnumerable<Topic> GetTopics => bestContent.Topic;
+        public IEnumerable<Topic> GetTopics => bestContent.Topic.Include(c => c.Campaings);
 
         public Topic GetTopicById(string topic_id) => bestContent.Topic.FirstOrDefault(t => t.Id == topic_id);
     }
