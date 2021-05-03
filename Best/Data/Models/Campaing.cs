@@ -1,4 +1,5 @@
 ﻿using Best.Areas.Identity.Data;
+using Best.Data.Models.Img;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,13 +12,14 @@ namespace Best.Data.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
+        public string Img { get; set; }
         public string Name { get; set; }
         public int Rating { get; set; }
         public string Bonuses { get; set; }
         public string TitleImg { get; set; }
-        public IEnumerable<CampaingCarousel> CampaingCarousel { get; set; }
         public IEnumerable<Post> Posts { get; set; }
         public virtual Topic Topic { get; set; }
         public virtual BestUser BestUser { get; set; }
+        public virtual IEnumerable<CampaingImg> Carusel { get; set; }
     }
 }

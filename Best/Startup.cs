@@ -34,6 +34,7 @@ namespace Best
             services.AddTransient<ITopics, TopicRepository>();
             services.AddTransient<IPosts, PostRepository>();
             services.AddTransient<IBestUsers, BestUserRepository>();
+            services.AddTransient<IImg, ImgRepository>();
             services.AddControllersWithViews();
             services.AddRazorPages();
 

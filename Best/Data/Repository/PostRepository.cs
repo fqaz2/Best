@@ -11,9 +11,11 @@ namespace Best.Data.Repository
     public class PostRepository : IPosts
     {
         private readonly BestContent bestContent;
-        public PostRepository(BestContent bestContent)
+        private readonly IImg _img;
+        public PostRepository(BestContent bestContent, IImg img)
         {
             this.bestContent = bestContent;
+            _img = img;
         }
         public IEnumerable<Post> GetPosts => bestContent.Post.Include(c => c.Campaing).Include(u => u.BestUser);
         public Post GetPostById(string post_id) => GetPosts.FirstOrDefault(p => p.Id == post_id);
@@ -24,15 +26,26 @@ namespace Best.Data.Repository
         public async Task<int> Create(Post post)
         {
             bestContent.Post.Add(post);
+            if (post.ImgFile != null)
+                await _img.CreateImgForPost(post);
+
             return await bestContent.SaveChangesAsync();
         }
         public async Task<int> Update(Post post)
         {
+            post.Campaing = await bestContent.Campaing.FirstOrDefaultAsync(c => c.Id == post.Campaing.Id);
+            post.BestUser = await bestContent.BestUser.FirstOrDefaultAsync(u => u.Id == post.BestUser.Id);
+
             bestContent.Post.Update(post);
+            if (post.ImgFile != null)
+                await _img.UpdateImgForPost(post);
+
             return await bestContent.SaveChangesAsync();
         }
         public async Task<int> Delete(Post post)
         {
+            if (post.Img != null)
+                await _img.DeleteImgsForPost(post);
             bestContent.Post.Remove(post);
             return await bestContent.SaveChangesAsync();
         }

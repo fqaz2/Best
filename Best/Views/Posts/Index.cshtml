@@ -10,7 +10,10 @@
     {
         <div class="card bg-light">
             <div class="card-header text-center"><h4>@post.Name</h4></div>
-            <img class="img-fluid" src="https://i.pinimg.com/originals/aa/98/ce/aa98ce342844fe8f283bd3cb650425e7.jpg" alt="Card image cap">
+            @if (@post.Img != null)
+            {
+                <img class="img-fluid" src="@post.Img" alt="Card image cap">
+            }
             <div class="card-body">
                 <h5 class="card-title">
                     sdfg

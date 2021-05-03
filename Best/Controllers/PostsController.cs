@@ -126,14 +126,6 @@ namespace Best.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Post post)
         {
-            if (!_signInManager.IsSignedIn(User))
-            {
-                return RedirectToAction(nameof(Index));
-            }
-
-            post.Campaing = await _context.Campaing.FirstOrDefaultAsync(c => c.Id == post.Campaing.Id);
-            post.BestUser = await _context.BestUser.FirstOrDefaultAsync(u => u.Id == post.BestUser.Id);
-
             if (ModelState.IsValid)
             {
                 await _posts.Update(post);
