@@ -12,7 +12,7 @@
             <div class="card-header text-center"><h4>@post.Name</h4></div>
             @if (@post.Img != null)
             {
-                <img class="img-fluid" src="@post.Img" alt="Card image cap">
+                <img class="img-fluid" src="@await _dropbox.getImgByUrl(post.Img)" alt="Card image cap">
             }
             <div class="card-body">
                 <h5 class="card-title">

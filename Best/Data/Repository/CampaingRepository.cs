@@ -18,7 +18,7 @@ namespace Best.Data.Repository
             this.bestContent = bestContent;
             _posts = posts;
         }
-        public IEnumerable<Campaing> GetCampaings => bestContent.Campaing.Include(t => t.Topic).Include(p => p.Posts).Include(imgs => imgs.Carusel).Include(u => u.BestUser);
+        public IEnumerable<Campaing> GetCampaings => bestContent.Campaing.Include(t => t.Topic).Include(p => p.Posts).Include(imgs => imgs.Carousel).Include(u => u.BestUser);
 
         public Campaing GetCampaingById(string campaing_id) => GetCampaings.FirstOrDefault(c => c.Id == campaing_id);
 
@@ -38,7 +38,7 @@ namespace Best.Data.Repository
         public async Task<int> Delete(Campaing campaing)
         {
             await _posts.DeletePostsByCampaingId(campaing.Id);
-            bestContent.CampaingImg.RemoveRange(campaing.Carusel);
+            bestContent.CampaingImg.RemoveRange(campaing.Carousel);
 
             campaing = GetCampaingById(campaing.Id);
             bestContent.Campaing.Remove(campaing);

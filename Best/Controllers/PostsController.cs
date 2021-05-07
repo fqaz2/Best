@@ -50,8 +50,7 @@ namespace Best.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Post
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var post = _posts.GetPostById(id);
             if (post == null)
             {
                 return NotFound();
@@ -162,7 +161,7 @@ namespace Best.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var post = await _context.Post.FindAsync(id);
+            var post = _posts.GetPostById(id);
             await _posts.Delete(post);
             return RedirectToAction(nameof(Index));
         }

@@ -14,7 +14,7 @@ namespace Best.Data.Interfaces
         Post GetPostById(string post_id);
         Post GetPostByIdForUser(string user_id, string post_id);
         Task<int> Create(Post post);
-        Task<int> Update(Post post);
+        Task Update(Post post);
         Task<int> Delete(Post post);
         Task<int> DeletePostsByCampaingId(string campaing_Id);
     }

@@ -1,0 +1,26 @@
+﻿@model Post
+
+@{
+    ViewData["Title"] = "Index";
+}
+<hr />
+<h1>Carousel</h1>
+<form asp-controller="Img" asp-action="AddPostImgs" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" value="@Model.Id" />
+    <label asp-for="Carousel" class="control-label"></label>
+    <input asp-for="ImgsFile" accept="image/*" />
+    <input type="submit" value="Add imgs" class="btn btn-primary" />
+</form>
+<div class="card-columns">
+    @foreach (var item in Model.Carousel)
+    {
+        <div class="card">
+            <img class="card-img-top" src="@await _dropbox.getImgByUrl(item.Url)" alt="@item.Alt">
+            <div class="card-body">
+                @item.Alt
+            </div>
+            <a asp-controller="Img" asp-action="DeletePostImg" asp-route-id="@item.Id" class="btn btn-danger">Delete img</a>
+        </div>
+    }
+</div>

@@ -19,8 +19,10 @@ namespace Best.Data.Models
         public string mintext { get; set; }
         public virtual Campaing Campaing { get; set; }
         public virtual BestUser BestUser { get; set; }
-        public virtual IEnumerable<PostImg> Carusel { get; set; }
+        public virtual IEnumerable<PostImg> Carousel { get; set; }
         [NotMapped]
         public IFormFile ImgFile { get; set; }
+        [NotMapped]
+        public IEnumerable<IFormFile> ImgsFile { get; set; }
     }
 }

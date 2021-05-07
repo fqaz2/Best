@@ -20,6 +20,6 @@ namespace Best.Data.Models
         public IEnumerable<Post> Posts { get; set; }
         public virtual Topic Topic { get; set; }
         public virtual BestUser BestUser { get; set; }
-        public virtual IEnumerable<CampaingImg> Carusel { get; set; }
+        public virtual IEnumerable<CampaingImg> Carousel { get; set; }
     }
 }
