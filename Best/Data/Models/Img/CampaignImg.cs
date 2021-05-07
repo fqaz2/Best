@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace Best.Data.Models.Img
 {
-    public class CampaingImg : Img
+    public class CampaignImg : Img
     {
-        public virtual Campaing Campaing { get; set; }
+        public virtual Campaign Campaign { get; set; }
     }
 }

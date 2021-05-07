@@ -11,6 +11,6 @@ namespace Best.Data.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
         public string Name { get; set; }
-        public virtual IEnumerable<Campaing> Campaings { get; }
+        public virtual IEnumerable<Campaign> Campaigns { get; }
     }
 }

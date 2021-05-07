@@ -15,7 +15,7 @@ namespace Best.Data.Repository
         {
             this.bestContent = bestContent;
         }
-        public IEnumerable<Topic> GetTopics => bestContent.Topic.Include(c => c.Campaings);
+        public IEnumerable<Topic> GetTopics => bestContent.Topic.Include(c => c.Campaigns);
 
         public Topic GetTopicById(string topic_id) => bestContent.Topic.FirstOrDefault(t => t.Id == topic_id);
     }

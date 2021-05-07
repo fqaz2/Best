@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Best.Migrations
 {
-    public partial class addV1 : Migration
+    public partial class add1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -40,7 +40,8 @@ namespace Best.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    IsBlock = table.Column<bool>(nullable: false)
+                    IsBlock = table.Column<bool>(nullable: false),
+                    Img = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -166,10 +167,31 @@ namespace Best.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Campaing",
+                name: "BestUserImg",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
+                    Url = table.Column<string>(nullable: true),
+                    Alt = table.Column<string>(nullable: true),
+                    BestUserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BestUserImg", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BestUserImg_AspNetUsers_BestUserId",
+                        column: x => x.BestUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Campaign",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Img = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
                     Rating = table.Column<int>(nullable: false),
                     Bonuses = table.Column<string>(nullable: true),
@@ -179,15 +201,15 @@ namespace Best.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Campaing", x => x.Id);
+                    table.PrimaryKey("PK_Campaign", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Campaing_AspNetUsers_BestUserId",
+                        name: "FK_Campaign_AspNetUsers_BestUserId",
                         column: x => x.BestUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Campaing_Topic_TopicId",
+                        name: "FK_Campaign_Topic_TopicId",
                         column: x => x.TopicId,
                         principalTable: "Topic",
                         principalColumn: "Id",
@@ -195,21 +217,21 @@ namespace Best.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CampaingCarousel",
+                name: "CampaignImg",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    Img = table.Column<string>(nullable: true),
+                    Url = table.Column<string>(nullable: true),
                     Alt = table.Column<string>(nullable: true),
-                    CampaingId = table.Column<string>(nullable: true)
+                    CampaignId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CampaingCarousel", x => x.Id);
+                    table.PrimaryKey("PK_CampaignImg", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CampaingCarousel_Campaing_CampaingId",
-                        column: x => x.CampaingId,
-                        principalTable: "Campaing",
+                        name: "FK_CampaignImg_Campaign_CampaignId",
+                        column: x => x.CampaignId,
+                        principalTable: "Campaign",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -219,10 +241,11 @@ namespace Best.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
+                    Img = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
                     text = table.Column<string>(nullable: true),
                     mintext = table.Column<string>(nullable: true),
-                    CampaingId = table.Column<string>(nullable: true),
+                    CampaignId = table.Column<string>(nullable: true),
                     BestUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -235,9 +258,29 @@ namespace Best.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Post_Campaing_CampaingId",
-                        column: x => x.CampaingId,
-                        principalTable: "Campaing",
+                        name: "FK_Post_Campaign_CampaignId",
+                        column: x => x.CampaignId,
+                        principalTable: "Campaign",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PostImg",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Url = table.Column<string>(nullable: true),
+                    Alt = table.Column<string>(nullable: true),
+                    PostId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PostImg", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PostImg_Post_PostId",
+                        column: x => x.PostId,
+                        principalTable: "Post",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -282,19 +325,24 @@ namespace Best.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Campaing_BestUserId",
-                table: "Campaing",
+                name: "IX_BestUserImg_BestUserId",
+                table: "BestUserImg",
                 column: "BestUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Campaing_TopicId",
-                table: "Campaing",
+                name: "IX_Campaign_BestUserId",
+                table: "Campaign",
+                column: "BestUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Campaign_TopicId",
+                table: "Campaign",
                 column: "TopicId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CampaingCarousel_CampaingId",
-                table: "CampaingCarousel",
-                column: "CampaingId");
+                name: "IX_CampaignImg_CampaignId",
+                table: "CampaignImg",
+                column: "CampaignId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Post_BestUserId",
@@ -302,9 +350,14 @@ namespace Best.Migrations
                 column: "BestUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Post_CampaingId",
+                name: "IX_Post_CampaignId",
                 table: "Post",
-                column: "CampaingId");
+                column: "CampaignId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PostImg_PostId",
+                table: "PostImg",
+                column: "PostId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -325,16 +378,22 @@ namespace Best.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "CampaingCarousel");
+                name: "BestUserImg");
 
             migrationBuilder.DropTable(
-                name: "Post");
+                name: "CampaignImg");
+
+            migrationBuilder.DropTable(
+                name: "PostImg");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Campaing");
+                name: "Post");
+
+            migrationBuilder.DropTable(
+                name: "Campaign");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

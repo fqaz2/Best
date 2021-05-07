@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Best.Data.Models
 {
-    public class Campaing
+    public class Campaign
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
@@ -21,7 +21,7 @@ namespace Best.Data.Models
         public IEnumerable<Post> Posts { get; set; }
         public virtual Topic Topic { get; set; }
         public virtual BestUser BestUser { get; set; }
-        public virtual IEnumerable<CampaingImg> Carousel { get; set; }
+        public virtual IEnumerable<CampaignImg> Carousel { get; set; }
         [NotMapped]
         public IFormFile ImgFile { get; set; }
         [NotMapped]

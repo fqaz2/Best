@@ -13,28 +13,28 @@ using System.Threading.Tasks;
 
 namespace Best.Controllers
 {
-    public class CampaingsController : Controller
+    public class CampaignsController : Controller
     {
-        private readonly ICampaings _campaings;
+        private readonly ICampaigns _Campaigns;
         private readonly ITopics _topics;
         private readonly UserManager<BestUser> _userManager;
         private readonly SignInManager<BestUser> _signInManager;
         private readonly BestContent _context;
-        public CampaingsController(ICampaings campaings, ITopics topics, UserManager<BestUser> userManager, SignInManager<BestUser> signInManager, BestContent context)
+        public CampaignsController(ICampaigns Campaigns, ITopics topics, UserManager<BestUser> userManager, SignInManager<BestUser> signInManager, BestContent context)
         {
-            _campaings = campaings;
+            _Campaigns = Campaigns;
             _topics = topics;
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
         }
-        public IEnumerable<Campaing> GetCampaings()
+        public IEnumerable<Campaign> GetCampaigns()
         {
-            return _campaings.GetCampaings;
+            return _Campaigns.GetCampaigns;
         }
         public IActionResult Index()
         {
-            return View(_campaings.GetCampaings);
+            return View(_Campaigns.GetCampaigns);
         }
         public IActionResult Create()
         {
@@ -46,16 +46,16 @@ namespace Best.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Campaing campaing)
+        public async Task<IActionResult> Create(Campaign Campaign)
         {
             if (!_signInManager.IsSignedIn(User))
             {
                 return RedirectToAction(nameof(Index));
             }
-            campaing.Topic = _topics.GetTopicById(campaing.Topic.Id);
-            campaing.BestUser = await _userManager.FindByIdAsync(campaing.BestUser.Id);
+            Campaign.Topic = _topics.GetTopicById(Campaign.Topic.Id);
+            Campaign.BestUser = await _userManager.FindByIdAsync(Campaign.BestUser.Id);
             
-            await _campaings.Create(campaing);
+            await _Campaigns.Create(Campaign);
             return RedirectToAction(nameof(Index));
         }
 
@@ -66,13 +66,13 @@ namespace Best.Controllers
                 return NotFound();
             }
 
-            var Campaing = _campaings.GetCampaingById(id);
-            if (Campaing == null)
+            var Campaign = _Campaigns.GetCampaignById(id);
+            if (Campaign == null)
             {
                 return NotFound();
             }
 
-            return View(Campaing);
+            return View(Campaign);
         }
         public IActionResult Edit(string id)
         {
@@ -86,30 +86,30 @@ namespace Best.Controllers
                 return NotFound();
             }
 
-            var campaing = _campaings.GetCampaingByIdForUser(_userManager.GetUserId(User), id);
-            if (campaing == null)
+            var Campaign = _Campaigns.GetCampaignByIdForUser(_userManager.GetUserId(User), id);
+            if (Campaign == null)
             {
                 return NotFound();
             }
-            return View(campaing);
+            return View(Campaign);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Campaing campaing)
+        public async Task<IActionResult> Edit(Campaign Campaign)
         {
             if (!_signInManager.IsSignedIn(User))
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            await _campaings.Update(campaing);
+            await _Campaigns.Update(Campaign);
 
             if (ModelState.IsValid)
             {
                 return RedirectToAction(nameof(Index));
             }
-            return View(campaing);
+            return View(Campaign);
         }
         public IActionResult Delete(string id)
         {
@@ -123,13 +123,13 @@ namespace Best.Controllers
                 return NotFound();
             }
 
-            var campaing = _campaings.GetCampaingByIdForUser(_userManager.GetUserId(User), id);
-            if (campaing == null)
+            var Campaign = _Campaigns.GetCampaignByIdForUser(_userManager.GetUserId(User), id);
+            if (Campaign == null)
             {
                 return NotFound();
             }
 
-            return View(campaing);
+            return View(Campaign);
         }
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -140,17 +140,17 @@ namespace Best.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var campaing = _campaings.GetCampaingById(id);
+            var Campaign = _Campaigns.GetCampaignById(id);
 
-            if (campaing.BestUser.Id != _userManager.GetUserId(User))
+            if (Campaign.BestUser.Id != _userManager.GetUserId(User))
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            await _campaings.Delete(campaing);
+            await _Campaigns.Delete(Campaign);
             return RedirectToAction(nameof(Index));
         }
-        private bool CampaingExists(string id)
+        private bool CampaignExists(string id)
         {
             return _context.Topic.Any(e => e.Id == id);
         }

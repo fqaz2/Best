@@ -18,17 +18,17 @@ namespace Best.Controllers
         private readonly UserManager<BestUser> _userManager;
         private readonly SignInManager<BestUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly ICampaings _campaings;
+        private readonly ICampaigns _Campaigns;
         private readonly IPosts _posts;
         private readonly IBestUsers _bestUser;
         private readonly BestContent _context;
-        public UsersController(UserManager<BestUser> userManager, SignInManager<BestUser> signInManager, RoleManager<IdentityRole> roleManager, BestContent context, ICampaings campaings, IPosts posts, IBestUsers bestUser)
+        public UsersController(UserManager<BestUser> userManager, SignInManager<BestUser> signInManager, RoleManager<IdentityRole> roleManager, BestContent context, ICampaigns Campaigns, IPosts posts, IBestUsers bestUser)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _context = context;
-            _campaings = campaings;
+            _Campaigns = Campaigns;
             _posts = posts;
             _bestUser = bestUser;
         }
@@ -101,7 +101,7 @@ namespace Best.Controllers
             try
             {
                 bestUser = await _userManager.FindByIdAsync(bestUser.Id);
-                bestUser.Campaings = _campaings.GetCampaingsByUserId(bestUser.Id);
+                bestUser.Campaigns = _Campaigns.GetCampaignsByUserId(bestUser.Id);
                 if (bestUser.IsBlock)
                 {
                     bestUser.IsBlock = false;
@@ -130,7 +130,7 @@ namespace Best.Controllers
                 return NotFound();
             }
             BestUser bestUser = await _userManager.FindByIdAsync(id);
-            bestUser.Campaings = _campaings.GetCampaingsByUserId(id);
+            bestUser.Campaigns = _Campaigns.GetCampaignsByUserId(id);
             bestUser.Posts = _posts.GetPostsByUserId(id);
             return View(bestUser);
         }

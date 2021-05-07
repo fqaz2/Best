@@ -1,19 +1,23 @@
-﻿@model Campaing
+﻿@model Campaign
+
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 }
+
 @using Best.Data.Interfaces
 @inject ITopics topics
 @inject UserManager<BestUser> UserManager
-<h1>Create</h1>
 
-<h4>Campaing</h4>
+<h1>Edit</h1>
+
+<h4>Campaign</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data">
+    <div class="col-md-12">
+        <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="BestUser.Id" value="@UserManager.GetUserId(User)" />
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="BestUser.Id" />
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -40,17 +44,15 @@
                 <div class="invalid-feedback">Example invalid custom select feedback</div>
             </div>
             <div class="form-group">
-                <label asp-for="Img" class="control-label"></label>
-                <input asp-for="ImgFile" accept="image/*" />
+                <label class="control-label">Avatar</label>
+                <input asp-for="ImgFile" class="btn btn-primary" accept="image/*" />
+                <span asp-validation-for="ImgFile" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Carousel" class="control-label"></label>
-                <input asp-for="ImgsFile" accept="image/*" />
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
+        <partial name="/Views/Img/IndexCampaignImg.cshtml" model="@Model" />
     </div>
 </div>
 

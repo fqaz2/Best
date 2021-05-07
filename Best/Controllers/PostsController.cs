@@ -19,16 +19,16 @@ namespace Best.Controllers
         private readonly SignInManager<BestUser> _signInManager;
         private readonly BestContent _context;
         private readonly IPosts _posts;
-        private readonly ICampaings _campaings;
+        private readonly ICampaigns _Campaigns;
         private readonly IBestUsers _bestUsers;
 
-        public PostsController(BestContent context, IPosts posts, UserManager<BestUser> userManager, SignInManager<BestUser> signInManager, ICampaings campaings, IBestUsers bestUsers)
+        public PostsController(BestContent context, IPosts posts, UserManager<BestUser> userManager, SignInManager<BestUser> signInManager, ICampaigns Campaigns, IBestUsers bestUsers)
         {
             _context = context;
             _posts = posts;
             _userManager = userManager;
             _signInManager = signInManager;
-            _campaings = campaings;
+            _Campaigns = Campaigns;
             _bestUsers = bestUsers;
         }
 
@@ -39,7 +39,7 @@ namespace Best.Controllers
             {
                 return View(await _context.Post.ToListAsync());
             }
-            return View(await _context.Post.Where(p => p.Campaing.Id == id).ToListAsync());
+            return View(await _context.Post.Where(p => p.Campaign.Id == id).ToListAsync());
         }
 
         // GET: Posts/Details/5
@@ -71,7 +71,7 @@ namespace Best.Controllers
                 return View();
             }
             Post post = new Post();
-            post.Campaing = _campaings.GetCampaingByIdForUser(_userManager.GetUserId(User), id);
+            post.Campaign = _Campaigns.GetCampaignByIdForUser(_userManager.GetUserId(User), id);
             if (post == null)
             {
                 return NotFound();
@@ -88,7 +88,7 @@ namespace Best.Controllers
         {
             if (ModelState.IsValid)
             {
-                post.Campaing = _campaings.GetCampaingById(post.Campaing.Id);
+                post.Campaign = _Campaigns.GetCampaignById(post.Campaign.Id);
                 post.BestUser = await _userManager.FindByIdAsync(post.BestUser.Id);
                 await _posts.Create(post);
                 return RedirectToAction(nameof(Index));

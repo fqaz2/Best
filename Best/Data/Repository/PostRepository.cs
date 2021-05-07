@@ -19,10 +19,10 @@ namespace Best.Data.Repository
             _postImg = postImg;
             _dropbox = dropbox;
         }
-        public IEnumerable<Post> GetPosts => bestContent.Post.Include(imgs => imgs.Carousel).Include(c => c.Campaing).Include(u => u.BestUser);
+        public IEnumerable<Post> GetPosts => bestContent.Post.Include(imgs => imgs.Carousel).Include(c => c.Campaign).Include(u => u.BestUser);
         public Post GetPostById(string post_id) => GetPosts.FirstOrDefault(p => p.Id == post_id);
-        public IEnumerable<Post> GetPostsByCampaingId(string campaing_Id) => GetPosts.Where(p => p.Campaing.Id == campaing_Id);
-        public IEnumerable<Post> GetPostsByUserId(string user_Id) => GetPosts.Where(p => p.Campaing.BestUser.Id == user_Id);
+        public IEnumerable<Post> GetPostsByCampaignId(string Campaign_Id) => GetPosts.Where(p => p.Campaign.Id == Campaign_Id);
+        public IEnumerable<Post> GetPostsByUserId(string user_Id) => GetPosts.Where(p => p.Campaign.BestUser.Id == user_Id);
         public Post GetPostByIdForUser(string user_id, string post_id) => GetPostsByUserId(user_id).FirstOrDefault(p => p.Id == post_id);
         //CRUD
         public async Task<int> Create(Post post)
@@ -35,7 +35,7 @@ namespace Best.Data.Repository
         }
         public async Task Update(Post post)
         {
-            post.Campaing = await bestContent.Campaing.FirstOrDefaultAsync(c => c.Id == post.Campaing.Id);
+            post.Campaign = await bestContent.Campaign.FirstOrDefaultAsync(c => c.Id == post.Campaign.Id);
             post.BestUser = await bestContent.BestUser.FirstOrDefaultAsync(u => u.Id == post.BestUser.Id);
             bestContent.Post.Update(post);
             await bestContent.SaveChangesAsync();
@@ -50,9 +50,9 @@ namespace Best.Data.Repository
             bestContent.Post.Remove(post);
             return await bestContent.SaveChangesAsync();
         }
-        public async Task<int> DeletePostsByCampaingId(string campaing_Id)
+        public async Task<int> DeletePostsByCampaignId(string Campaign_Id)
         {
-            var posts = GetPostsByCampaingId(campaing_Id).ToList();
+            var posts = GetPostsByCampaignId(Campaign_Id).ToList();
             int result = 0;
             foreach (var post in posts)
             {

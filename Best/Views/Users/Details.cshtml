@@ -1,6 +1,6 @@
 ﻿@model BestUser
 @inject UserManager<BestUser> UserManager
-@inject ICampaings Campaings
+@inject ICampaigns Campaigns
 @{
     ViewData["Title"] = "Details";
 }
@@ -47,12 +47,12 @@
     </dl>
     <dl class="row">
         <dt class="col-sm-2">
-            Campaings
+            Campaigns
         </dt>
         <dd class="col-sm-10">
-            @foreach (var campaing in Campaings.GetCampaingsByUserId(Model.Id))
+            @foreach (var Campaign in Campaigns.GetCampaignsByUserId(Model.Id))
             {
-                <a asp-controller="Campaings" asp-action="Details" asp-route-id="@campaing.Id">@campaing.Name</a>
+                <a asp-controller="Campaigns" asp-action="Details" asp-route-id="@Campaign.Id">@Campaign.Name</a>
             }
         </dd>
     </dl>

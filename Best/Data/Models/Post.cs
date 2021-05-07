@@ -17,7 +17,7 @@ namespace Best.Data.Models
         public string Name { get; set; }
         public string text { get; set; }
         public string mintext { get; set; }
-        public virtual Campaing Campaing { get; set; }
+        public virtual Campaign Campaign { get; set; }
         public virtual BestUser BestUser { get; set; }
         public virtual IEnumerable<PostImg> Carousel { get; set; }
         [NotMapped]

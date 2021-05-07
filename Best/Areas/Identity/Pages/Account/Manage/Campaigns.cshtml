@@ -4,9 +4,9 @@
 @inject UserManager<BestUser> UserManager
 @inject ICampaigns _campaigns
 @{
-    ViewData["Title"] = "My avatar";
+    ViewData["Title"] = "My Campaigns";
     ViewData["ActivePage"] = ManageNavPages.Campaigns;
-    IEnumerable<Campaign> Campaigns = _campaigns.GetCampaignsByUserId(UserManager.GetUserId(User));
+    IEnumerable<Campaign> campaigns = _campaigns.GetCampaignsByUserId(UserManager.GetUserId(User));
 }
 <h4>@ViewData["Title"]</h4>
 <div class="row">
@@ -22,22 +22,22 @@
                 </tr>
             </thead>
             <tbody class="text-right">
-                @foreach (var Campaign in Campaigns)
+                @foreach (var campaign in campaigns)
                 {
                     <tr>
-                        <td>@Campaign.Name</td>
+                        <td>@campaign.Name</td>
                         <td>
-                            @if (Campaign.Topic != null)
+                            @if (campaign.Topic != null)
                             {
-                                @Campaign.Topic.Name
+                                @campaign.Topic.Name
                             }
                         </td>
-                        <td>@Campaign.Rating</td>
+                        <td>@campaign.Rating</td>
                         <td>
-                            <a class="btn btn-primary" asp-controller="Posts" asp-action="Create" asp-route-id="@Campaign.Id">Create post</a>
-                            <a class="btn btn-primary" asp-controller="Campaigns" asp-action="Edit" asp-route-id="@Campaign.Id">Edit</a>
-                            <a class="btn btn-primary" asp-controller="Campaigns" asp-action="Details" asp-route-id="@Campaign.Id">Details</a>
-                            <a class="btn btn-danger" asp-controller="Campaigns" asp-action="Delete" asp-route-id="@Campaign.Id">Delete</a>
+                            <a class="btn btn-primary" asp-controller="Posts" asp-action="Create" asp-route-id="@campaign.Id">Create post</a>
+                            <a class="btn btn-primary" asp-controller="Campaigns" asp-action="Edit" asp-route-id="@campaign.Id">Edit</a>
+                            <a class="btn btn-primary" asp-controller="Campaigns" asp-action="Details" asp-route-id="@campaign.Id">Details</a>
+                            <a class="btn btn-danger" asp-controller="Campaigns" asp-action="Delete" asp-route-id="@campaign.Id">Delete</a>
                         </td>
                     </tr>
                 }

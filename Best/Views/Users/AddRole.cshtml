@@ -1,5 +1,5 @@
 ﻿@model CombUserRole
-@inject ICampaings Campaings
+@inject ICampaigns Campaigns
 @inject RoleManager<IdentityRole> RoleManager
 @{
     ViewData["Title"] = "AddRole";
@@ -38,12 +38,12 @@
     </dl>
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.BestUser.Campaings)
+            @Html.DisplayNameFor(model => model.BestUser.Campaigns)
         </dt>
         <dd class="col-sm-10">
-            @foreach (var campaing in Campaings.GetCampaingsByUserId(Model.BestUser.Id))
+            @foreach (var Campaign in Campaigns.GetCampaignsByUserId(Model.BestUser.Id))
             {
-                <a asp-controller="Campaings" asp-action="Details" asp-route-id="@campaing.Id">@campaing.Name</a>
+                <a asp-controller="Campaigns" asp-action="Details" asp-route-id="@Campaign.Id">@Campaign.Name</a>
             }
         </dd>
     </dl>

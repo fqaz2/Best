@@ -30,13 +30,13 @@ namespace Best
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<BestContent>(options => options.UseSqlServer(Configuration.GetConnectionString("BestContextConnection")));
-            services.AddTransient<ICampaings, CampaingRepository>();
+            services.AddTransient<ICampaigns, CampaignRepository>();
             services.AddTransient<ITopics, TopicRepository>();
             services.AddTransient<IPosts, PostRepository>();
             services.AddTransient<IBestUsers, BestUserRepository>();
             services.AddTransient<IDropbox, DropboxRepository>();
             services.AddTransient<IPostImg, PostImgRepository>();
-            services.AddTransient<ICampaingImg, CampaingImgRepository>();
+            services.AddTransient<ICampaignImg, CampaignImgRepository>();
             services.AddControllersWithViews();
             services.AddRazorPages();
 

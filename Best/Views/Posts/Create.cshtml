@@ -1,9 +1,9 @@
 ﻿@model Post
 @inject UserManager<BestUser> UserManager
-@inject ICampaings Campaings
+@inject ICampaigns _campaigns
 @{
     ViewData["Title"] = "Create";
-    IEnumerable<Campaing> campaings = Campaings.GetCampaingsByUserId(UserManager.GetUserId(User));
+    IEnumerable<Campaign> Campaigns = _campaigns.GetCampaignsByUserId(UserManager.GetUserId(User));
 }
 
 <h1>Create</h1>
@@ -31,11 +31,11 @@
                 <span asp-validation-for="mintext" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Campaing" class="control-label"></label>
-                <select class="custom-select" asp-for="Campaing.Id" required>
-                    @foreach (var campaing in campaings)
+                <label asp-for="Campaign" class="control-label"></label>
+                <select class="custom-select" asp-for="Campaign.Id" required>
+                    @foreach (var Campaign in Campaigns)
                     {
-                        <option value="@campaing.Id">@campaing.Name</option>
+                        <option value="@Campaign.Id">@Campaign.Name</option>
                     }
                 </select>
             </div>

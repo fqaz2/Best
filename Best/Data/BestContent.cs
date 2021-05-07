@@ -20,8 +20,8 @@ namespace Best.Data
         public DbSet<BestUser> BestUser { get; set; }
         public DbSet<BestUserImg> BestUserImg { get; set; }
         //campaign
-        public DbSet<Campaing> Campaing { get; set; }
-        public DbSet<CampaingImg> CampaingImg { get; set; }
+        public DbSet<Campaign> Campaign { get; set; }
+        public DbSet<CampaignImg> CampaignImg { get; set; }
         public DbSet<Topic> Topic { get; set; }
         //post
         public DbSet<Post> Post { get; set; }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Campaing>
+﻿@model IEnumerable<Campaign>
 
 @{
     ViewData["Title"] = "Index";
@@ -6,16 +6,16 @@
 
 <h1>Index</h1>
 <div class="card-columns">
-    @foreach (var campaing in Model)
+    @foreach (var Campaign in Model)
     {
         <div class="card bg-light">
-            <div class="card-header text-center"><h4>@campaing.Name</h4></div>
-            <img class="img-fluid" src="@await _dropbox.getImgByUrl(campaing.Img)" alt="Card image cap">
+            <div class="card-header text-center"><h4>@Campaign.Name</h4></div>
+            <img class="img-fluid" src="@await _dropbox.getImgByUrl(Campaign.Img)" alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title">
                     @for (int i = 0; i < 5; i++)
                     {
-                        if (i < @campaing.Rating)
+                        if (i < @Campaign.Rating)
                         {
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill text-warning" viewBox="0 0 16 16">
                                 <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
@@ -29,14 +29,14 @@
                         }
                     }
                 </h5>
-                @if (campaing.Topic != null)
+                @if (Campaign.Topic != null)
                 {
-                    <a class="btn btn-primary btn-sm" href="#" role="button"> @campaing.Topic.Name </a>
+                    <a class="btn btn-primary btn-sm" href="#" role="button"> @Campaign.Topic.Name </a>
                 }
                 <p class="card-text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. </p>
             </div>
             <div class="card-footer d-flex justify-content-end">
-                <a  asp-action="Details" asp-route-id="@campaing.Id" class="btn btn-primary align-self-end">Подробнее</a>
+                <a  asp-action="Details" asp-route-id="@Campaign.Id" class="btn btn-primary align-self-end">Подробнее</a>
             </div>
         </div>
     }

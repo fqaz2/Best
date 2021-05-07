@@ -11,17 +11,17 @@ namespace Best.Data.Repository
     public class BestUserRepository : IBestUsers
     {
         private readonly BestContent bestContent;
-        private readonly ICampaings _campaings;
-        public BestUserRepository(BestContent bestContent, ICampaings campaings)
+        private readonly ICampaigns _Campaigns;
+        public BestUserRepository(BestContent bestContent, ICampaigns Campaigns)
         {
             this.bestContent = bestContent;
-            _campaings = campaings;
+            _Campaigns = Campaigns;
         }
-        public IEnumerable<BestUser> GetUsers => bestContent.BestUser.Include(c => c.Campaings).Include(p => p.Posts);
+        public IEnumerable<BestUser> GetUsers => bestContent.BestUser.Include(c => c.Campaigns).Include(p => p.Posts);
         public BestUser GetUserById(string user_id) => GetUsers.FirstOrDefault(u => u.Id == user_id);
         public async Task<int> Delete(BestUser bestUser)
         {
-            await _campaings.DeleteCampaingsByUserId(bestUser.Id);
+            await _Campaigns.DeleteCampaignsByUserId(bestUser.Id);
 
             bestUser = GetUserById(bestUser.Id);
             bestContent.BestUser.Remove(bestUser);

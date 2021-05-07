@@ -14,14 +14,14 @@ namespace Best.Controllers
     {
         private readonly IPostImg _postImg;
         private readonly IPosts _posts;
-        private readonly ICampaingImg _campaingImg;
-        private readonly ICampaings _campaings;
-        public ImgController(IPostImg postImg, IPosts posts, ICampaingImg campaingImg, ICampaings campaings)
+        private readonly ICampaignImg _CampaignImg;
+        private readonly ICampaigns _Campaigns;
+        public ImgController(IPostImg postImg, IPosts posts, ICampaignImg CampaignImg, ICampaigns Campaigns)
         {
             _postImg = postImg;
             _posts = posts;
-            _campaingImg = campaingImg;
-            _campaings = campaings;
+            _CampaignImg = CampaignImg;
+            _Campaigns = Campaigns;
         }
         public async Task<IActionResult> IndexPostImg(Post post)
         {
@@ -41,23 +41,23 @@ namespace Best.Controllers
             if (newpost.ImgsFile != null) await _postImg.UpdateImgs(newpost);
             return RedirectToRoute(new { controller = "Posts", action = "Edit", id = post.Id });
         }
-        public async Task<IActionResult> IndexCampaignImg(Campaing campaing)
+        public async Task<IActionResult> IndexCampaignImg(Campaign Campaign)
         {
-            campaing = _campaings.GetCampaingById(campaing.Id);
-            return View(campaing);
+            Campaign = _Campaigns.GetCampaignById(Campaign.Id);
+            return View(Campaign);
         }
         public async Task<IActionResult> DeleteCampaignImg(string id)
         {
-            CampaingImg campaingImg = _campaingImg.GetImgById(id);
-            await _campaingImg.DeleteImg(campaingImg);
-            return RedirectToRoute(new { controller = "Campaings", action = "Edit", id = campaingImg.Campaing.Id });//controller = "Post",action = "Edit",id = postImg.Post.Id});
+            CampaignImg CampaignImg = _CampaignImg.GetImgById(id);
+            await _CampaignImg.DeleteImg(CampaignImg);
+            return RedirectToRoute(new { controller = "Campaigns", action = "Edit", id = CampaignImg.Campaign.Id });//controller = "Post",action = "Edit",id = postImg.Post.Id});
         }
-        public async Task<IActionResult> AddCampaignImgs(Campaing campaing)
+        public async Task<IActionResult> AddCampaignImgs(Campaign Campaign)
         {
-            var newcampaign = _campaings.GetCampaingById(campaing.Id);
-            newcampaign.ImgsFile = campaing.ImgsFile;
-            if (newcampaign.ImgsFile != null) await _campaingImg.UpdateImgs(newcampaign);
-            return RedirectToRoute(new { controller = "Campaings", action = "Edit", id = campaing.Id });
+            var newcampaign = _Campaigns.GetCampaignById(Campaign.Id);
+            newcampaign.ImgsFile = Campaign.ImgsFile;
+            if (newcampaign.ImgsFile != null) await _CampaignImg.UpdateImgs(newcampaign);
+            return RedirectToRoute(new { controller = "Campaigns", action = "Edit", id = Campaign.Id });
         }
 
     }

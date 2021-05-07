@@ -13,7 +13,7 @@ namespace Best.Areas.Identity.Data
     {
         public bool IsBlock { get; set; }
         public string Img { get; set; }
-        public virtual IEnumerable<Campaing> Campaings { get; set; }
+        public virtual IEnumerable<Campaign> Campaigns { get; set; }
         public virtual IEnumerable<Post> Posts { get; set; }
         public virtual IEnumerable<BestUserImg> Carousel { get; set; }
     }
