@@ -36,6 +36,7 @@ namespace Best
             services.AddTransient<IBestUsers, BestUserRepository>();
             services.AddTransient<IDropbox, DropboxRepository>();
             services.AddTransient<IPostImg, PostImgRepository>();
+            services.AddTransient<ICampaingImg, CampaingImgRepository>();
             services.AddControllersWithViews();
             services.AddRazorPages();
 

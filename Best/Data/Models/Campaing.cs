@@ -1,5 +1,6 @@
 ﻿using Best.Areas.Identity.Data;
 using Best.Data.Models.Img;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -21,5 +22,9 @@ namespace Best.Data.Models
         public virtual Topic Topic { get; set; }
         public virtual BestUser BestUser { get; set; }
         public virtual IEnumerable<CampaingImg> Carousel { get; set; }
+        [NotMapped]
+        public IFormFile ImgFile { get; set; }
+        [NotMapped]
+        public IEnumerable<IFormFile> ImgsFile { get; set; }
     }
 }

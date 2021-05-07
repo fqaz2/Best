@@ -103,8 +103,6 @@ namespace Best.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            campaing.Topic = _topics.GetTopicById(campaing.Topic.Id);
-            campaing.BestUser = await _userManager.FindByIdAsync(campaing.BestUser.Id);
             await _campaings.Update(campaing);
 
             if (ModelState.IsValid)
