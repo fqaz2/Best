@@ -22,23 +22,11 @@ namespace Best.Data.Repository
                 return TemporaryLink.Link;
             }
         }
-        public async Task<string> CreateAvatarImg(string uploadPath, IFormFile file)
+        public async Task<string> AddAvatarImg(string uploadPath, IFormFile file)
         {
             using (var dbx = new DropboxClient(token))
             {
                 var PathImg = $"{uploadPath}/Avatar";
-                var metadata = await dbx.Files.UploadAsync(PathImg, WriteMode.Overwrite.Instance, body: file.OpenReadStream());
-
-                return metadata.PathLower;
-            }
-        }
-        public async Task<string> UpdateAvatarImg(string uploadPath, IFormFile file)
-        {
-            using (var dbx = new DropboxClient(token))
-            {
-                var PathImg = $"{uploadPath}/Avatar";
-
-                await dbx.Files.DeleteV2Async(uploadPath);
                 var metadata = await dbx.Files.UploadAsync(PathImg, WriteMode.Overwrite.Instance, body: file.OpenReadStream());
 
                 return metadata.PathLower;

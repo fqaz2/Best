@@ -10,8 +10,7 @@ namespace Best.Data.Interfaces
     public interface IDropbox
     {
         Task<string> getImgByUrl(string Path);
-        Task<string> CreateAvatarImg(string uploadPath, IFormFile file);
-        Task<string> UpdateAvatarImg(string uploadPath, IFormFile file);
+        Task<string> AddAvatarImg(string uploadPath, IFormFile file);
         Task<string> DeleteAvatarImg(string uploadPath);
         Task CreateFolder(string uploadPath);
         Task DeleteFolder(string uploadPath);

@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Best.Data.Interfaces;
 
 namespace Best.Areas.Identity.Pages.Account
 {
@@ -24,17 +25,20 @@ namespace Best.Areas.Identity.Pages.Account
         private readonly UserManager<BestUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IDropbox _dropbox;
 
         public RegisterModel(
             UserManager<BestUser> userManager,
             SignInManager<BestUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IDropbox dropbox)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _dropbox = dropbox;
         }
 
         [BindProperty]
@@ -79,6 +83,7 @@ namespace Best.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
+                    await _dropbox.CreateFolder($@"/Users/{user.Id}");
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

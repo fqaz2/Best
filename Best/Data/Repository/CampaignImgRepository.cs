@@ -28,21 +28,21 @@ namespace Best.Data.Repository
         public CampaignImg GetImgById(string img_id) => GetImgs.FirstOrDefault(i => i.Id == img_id);
         public async Task CreateAvatar(Campaign Campaign)
         {
-            var uploadPath = $"/Campaigns/{Campaign.Id}";
-            Campaign.Img = await _dropbox.CreateAvatarImg(uploadPath, Campaign.ImgFile);
+            var uploadPath = $"/Users/{Campaign.BestUser.Id}/Campaigns/{Campaign.Id}";
+            Campaign.Img = await _dropbox.AddAvatarImg(uploadPath, Campaign.ImgFile);
             bestContent.Campaign.Add(Campaign);
         }
         public async Task UpdateAvatar(Campaign Campaign)
         {
-            var uploadPath = $"/Campaigns/{Campaign.Id}";
-            Campaign.Img = await _dropbox.UpdateAvatarImg(uploadPath, Campaign.ImgFile);
+            var uploadPath = $"/Users/{Campaign.BestUser.Id}/Campaigns/{Campaign.Id}";
+            Campaign.Img = await _dropbox.AddAvatarImg(uploadPath, Campaign.ImgFile);
 
             bestContent.Campaign.Update(Campaign);
             await bestContent.SaveChangesAsync();
         }
         public async Task DeleteAvatar(Campaign Campaign)
         {
-            var uploadPath = $"/Campaigns/{Campaign.Id}";
+            var uploadPath = $"/Users/{Campaign.BestUser.Id}/Campaigns/{Campaign.Id}";
             Campaign.Img = await _dropbox.DeleteAvatarImg(uploadPath);
             bestContent.Campaign.Update(Campaign);
         }
@@ -54,14 +54,14 @@ namespace Best.Data.Repository
         }
         public async Task CreateImgs(Campaign Campaign)
         {
-            var uploadPath = $"/Campaigns/{Campaign.Id}";
+            var uploadPath = $"/Users/{Campaign.BestUser.Id}/Campaigns/{Campaign.Id}";
             List<Img> carousel = await _dropbox.AddImgs(uploadPath, Campaign.ImgsFile);
             Campaign.Carousel = carousel.Select( img => new CampaignImg() { Alt = img.Alt, Url = img.Url, Campaign = Campaign }).ToList();
             bestContent.Campaign.Add(Campaign);
         }
         public async Task UpdateImgs(Campaign Campaign)
         {
-            var uploadPath = $"/Campaigns/{Campaign.Id}";
+            var uploadPath = $"/Users/{Campaign.BestUser.Id}/Campaigns/{Campaign.Id}";
             List<Img> imgs = await _dropbox.AddImgs(uploadPath, Campaign.ImgsFile);
             var carousel = Campaign.Carousel.ToList();
             carousel.AddRange(imgs.Select(img => new CampaignImg() { Alt = img.Alt, Url = img.Url, Campaign = Campaign }).ToList());
@@ -76,7 +76,7 @@ namespace Best.Data.Repository
             {
                 await DeleteImg(img);
             }
-            await _dropbox.DeleteFolder($"/Campaigns/{Campaign.Id}");
+            await _dropbox.DeleteFolder($"/Users/{Campaign.BestUser.Id}/Campaigns/{Campaign.Id}");
         }
     }
 }

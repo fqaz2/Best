@@ -71,8 +71,6 @@ namespace Best.Areas.Identity.Pages.Account.Manage
                 }
             }
 
-            //var result = await _userManager.DeleteAsync(user);
-            //var userId = await _userManager.GetUserIdAsync(user);
             var result = await _bestUser.Delete(user);
             if (result == 0)
             {

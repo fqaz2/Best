@@ -35,9 +35,10 @@ namespace Best.Data.Repository
         public async Task<int> Create(Campaign Campaign)
         {
             bestContent.Campaign.Add(Campaign);
-            await _dropbox.CreateFolder($"/Campaigns/{Campaign.Id}");
+            await _dropbox.CreateFolder($"/Users/{Campaign.BestUser.Id}/Campaigns/{Campaign.Id}");
             if (Campaign.ImgFile != null) await _CampaignImg.CreateAvatar(Campaign);
             if (Campaign.ImgsFile != null) await _CampaignImg.CreateImgs(Campaign);
+
             return await bestContent.SaveChangesAsync();
         }
         public async Task Update(Campaign Campaign)

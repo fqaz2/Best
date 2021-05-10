@@ -54,8 +54,8 @@ namespace Best.Controllers
             }
             Campaign.Topic = _topics.GetTopicById(Campaign.Topic.Id);
             Campaign.BestUser = await _userManager.FindByIdAsync(Campaign.BestUser.Id);
-            
             await _Campaigns.Create(Campaign);
+
             return RedirectToAction(nameof(Index));
         }
 

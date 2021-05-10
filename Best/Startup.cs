@@ -51,6 +51,17 @@ namespace Best
                     Options.ClientId = Configuration["Authentication:Facebook:ClientId"];
                     Options.ClientSecret = Configuration["Authentication:Facebook:ClientSecret"];
                 });
+
+            services.AddDefaultIdentity<BestUser>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = true;
+                options.Password.RequiredLength = 1;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+            })
+                    .AddRoles<IdentityRole>()
+                    .AddEntityFrameworkStores<BestContent>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

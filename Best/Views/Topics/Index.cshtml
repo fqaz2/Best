@@ -12,28 +12,34 @@
         <a class="btn btn-primary" asp-action="Create">Create New</a>
     </p>
 }
-<table class="table">
+<table class="table table-striped">
     <thead>
-        <tr>
-            <th>
+        <tr class="row">
+            <th class="col-sm-1">
                 @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th class="col">
+                @Html.DisplayNameFor(model => model.Description)
             </th>
             @if (SignInManager.IsSignedIn(User))
             {
-                <th>Action</th>
+                <th class="col-3">Action</th>
             }
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
+            <tr class="row">
+                <td class="col-sm-1">
                     @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td class="col">
+                    @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 @if (SignInManager.IsSignedIn(User))
                 {
-                    <td>
+                    <td class="col-3">
                         <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
                         <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id">Details</a>
                         <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>

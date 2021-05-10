@@ -10,7 +10,11 @@
     {
         <div class="card bg-light">
             <div class="card-header text-center"><h4>@Campaign.Name</h4></div>
-            <img class="img-fluid" src="@await _dropbox.getImgByUrl(Campaign.Img)" alt="Card image cap">
+            @if (Campaign.Img != null)
+            {
+                <img class="img-fluid" src="@await _dropbox.getImgByUrl(Campaign.Img)" alt="Card image cap">
+            }
+            
             <div class="card-body">
                 <h5 class="card-title">
                     @for (int i = 0; i < 5; i++)

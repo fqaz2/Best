@@ -6,7 +6,7 @@
 
 <h1> @Html.DisplayFor(model => model.Name)</h1>
 
-@if (Model.Carousel != null)
+@if (Model.Carousel.Count() != 0)
 {
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">

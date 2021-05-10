@@ -5,7 +5,7 @@
 }
 
 <h1> @Html.DisplayFor(model => model.Name)</h1>
-@if (Model.Carousel != null)
+@if (Model.Carousel.Count() != 0)
 {
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
@@ -37,9 +37,9 @@
     </div>
 }
 <h3>Text</h3>
-<p class="text-left">
+<markdown>
     @Html.DisplayFor(model => model.text)
-</p>
+</markdown>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>

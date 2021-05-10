@@ -28,21 +28,21 @@ namespace Best.Data.Repository
         public PostImg GetImgById(string img_id) => GetImgs.FirstOrDefault(i => i.Id == img_id);
         public async Task CreateAvatar(Post post)
         {
-            var uploadPath = $"/Posts/{post.Id}";
-            post.Img = await _dropbox.CreateAvatarImg(uploadPath,post.ImgFile);
+            var uploadPath = $"/Users/{post.BestUser.Id}/Campaigns/{post.Campaign.Id}/Posts/{post.Id}";
+            post.Img = await _dropbox.AddAvatarImg(uploadPath,post.ImgFile);
             bestContent.Post.Add(post);
         }
         public async Task UpdateAvatar(Post post)
         {
-            var uploadPath = $"/Posts/{post.Id}";
-            post.Img = await _dropbox.UpdateAvatarImg(uploadPath, post.ImgFile);
+            var uploadPath = $"/Users/{post.BestUser.Id}/Campaigns/{post.Campaign.Id}/Posts/{post.Id}";
+            post.Img = await _dropbox.AddAvatarImg(uploadPath, post.ImgFile);
 
             bestContent.Post.Update(post);
             await bestContent.SaveChangesAsync();
         }
         public async Task DeleteAvatar(Post post)
         {
-            var uploadPath = $"/Posts/{post.Id}";
+            var uploadPath = $"/Users/{post.BestUser.Id}/Campaigns/{post.Campaign.Id}/Posts/{post.Id}";
             post.Img = await _dropbox.DeleteAvatarImg(uploadPath);
             bestContent.Post.Update(post);
         }
@@ -54,14 +54,14 @@ namespace Best.Data.Repository
         }
         public async Task CreateImgs(Post post)
         {
-            var uploadPath = $"/Posts/{post.Id}";
+            var uploadPath = $"/Users/{post.BestUser.Id}/Campaigns/{post.Campaign.Id}/Posts/{post.Id}";
             List<Img> carousel = await _dropbox.AddImgs(uploadPath, post.ImgsFile);
             post.Carousel = carousel.Select( img => new PostImg() { Alt = img.Alt, Url = img.Url, Post = post}).ToList();
             bestContent.Post.Add(post);
         }
         public async Task UpdateImgs(Post post)
         {
-            var uploadPath = $"/Posts/{post.Id}";
+            var uploadPath = $"/Users/{post.BestUser.Id}/Campaigns/{post.Campaign.Id}/Posts/{post.Id}";
             List<Img> imgs = await _dropbox.AddImgs(uploadPath, post.ImgsFile);
             var carousel = post.Carousel.ToList();
             carousel.AddRange(imgs.Select(img => new PostImg() { Alt = img.Alt, Url = img.Url, Post = post }).ToList());
@@ -76,7 +76,7 @@ namespace Best.Data.Repository
             {
                 await DeleteImg(img);
             }
-            await _dropbox.DeleteFolder($"/Posts/{post.Id}");
+            await _dropbox.DeleteFolder($"/Users/{post.BestUser.Id}/Campaigns/{post.Campaign.Id}/Posts/{post.Id}");
         }
     }
 }
