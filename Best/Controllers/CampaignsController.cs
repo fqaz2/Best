@@ -2,6 +2,7 @@
 using Best.Data;
 using Best.Data.Interfaces;
 using Best.Data.Models;
+using Best.Data.Models.Rating;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -153,6 +154,23 @@ namespace Best.Controllers
         private bool CampaignExists(string id)
         {
             return _context.Topic.Any(e => e.Id == id);
+        }
+        public async Task<JsonResult> CampaignRating(string CampaignId, string UserId, string Rating)
+        {
+            var result = _context.CampaignRating.Where(l => l.Campaign.Id == CampaignId && l.BestUser.Id == UserId).ToList();
+            if (result.Count != 0)
+            {
+                _context.CampaignRating.RemoveRange(result);
+                await _context.SaveChangesAsync();
+                return Json(false);
+            }
+            CampaignRating campaignRating = new CampaignRating();
+            campaignRating.Campaign = await _context.Campaign.FirstOrDefaultAsync(p => p.Id == CampaignId);
+            campaignRating.BestUser = await _context.BestUser.FirstOrDefaultAsync(u => u.Id == UserId);
+            campaignRating.rating = Convert.ToInt32(Rating);
+            _context.Add(campaignRating);
+            await _context.SaveChangesAsync();
+            return Json(true);
         }
     }
 }

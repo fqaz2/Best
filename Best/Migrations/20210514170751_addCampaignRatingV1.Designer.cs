@@ -4,14 +4,16 @@ using Best.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Best.Migrations
 {
     [DbContext(typeof(BestContent))]
-    partial class BestContentModelSnapshot : ModelSnapshot
+    [Migration("20210514170751_addCampaignRatingV1")]
+    partial class addCampaignRatingV1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -107,6 +109,9 @@ namespace Best.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
 
                     b.Property<string>("TitleImg")
                         .HasColumnType("nvarchar(max)");

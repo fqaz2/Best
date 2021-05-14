@@ -2,6 +2,7 @@
 using Best.Data.Models;
 using Best.Data.Models.Img;
 using Best.Data.Models.Like;
+using Best.Data.Models.Rating;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -23,6 +24,7 @@ namespace Best.Data
         //campaign
         public DbSet<Campaign> Campaign { get; set; }
         public DbSet<CampaignImg> CampaignImg { get; set; }
+        public DbSet<CampaignRating> CampaignRating { get; set; }
         public DbSet<Topic> Topic { get; set; }
         //post
         public DbSet<Post> Post { get; set; }

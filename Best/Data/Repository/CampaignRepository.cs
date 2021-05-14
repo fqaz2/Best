@@ -25,7 +25,7 @@ namespace Best.Data.Repository
             _dropbox = dropbox;
             _CampaignImg = CampaignImg;
         }
-        public IEnumerable<Campaign> GetCampaigns => bestContent.Campaign.Include(t => t.Topic).Include(p => p.Posts).Include(imgs => imgs.Carousel).Include(u => u.BestUser);
+        public IEnumerable<Campaign> GetCampaigns => bestContent.Campaign.Include(t => t.Topic).Include(p => p.Posts).Include(imgs => imgs.Carousel).Include(u => u.BestUser).Include(r => r.Ratings);
 
         public Campaign GetCampaignById(string Campaign_id) => GetCampaigns.FirstOrDefault(c => c.Id == Campaign_id);
 
@@ -68,6 +68,13 @@ namespace Best.Data.Repository
                 result += await Delete(Campaign);
             }
             return result;
+        }
+        public async Task<double> Rating(string Campaign_id)
+        {
+            var ratings = bestContent.CampaignRating.Where(c => c.CampaignId == Campaign_id);
+            if (!ratings.Any())
+                return 0;
+            return await ratings.Select(r => r.rating).AverageAsync();
         }
     }
 }

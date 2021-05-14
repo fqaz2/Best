@@ -32,7 +32,7 @@
                                 @campaign.Topic.Name
                             }
                         </td>
-                        <td>@campaign.Rating</td>
+                        <td>@campaign.Ratings.Count()</td>
                         <td>
                             <a class="btn btn-primary" asp-controller="Posts" asp-action="Create" asp-route-id="@campaign.Id">Create post</a>
                             <a class="btn btn-primary" asp-controller="Campaigns" asp-action="Edit" asp-route-id="@campaign.Id">Edit</a>

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Best.Data.Models;
 using Best.Data.Models.Img;
 using Best.Data.Models.Like;
+using Best.Data.Models.Rating;
 using Microsoft.AspNetCore.Identity;
 
 namespace Best.Areas.Identity.Data
@@ -18,5 +19,6 @@ namespace Best.Areas.Identity.Data
         public virtual IEnumerable<Post> Posts { get; set; }
         public virtual IEnumerable<BestUserImg> Carousel { get; set; }
         public virtual IEnumerable<PostLike> PostLike { get; set; }
+        public virtual IEnumerable<CampaignRating> CampaignRating { get; set; }
     }
 }

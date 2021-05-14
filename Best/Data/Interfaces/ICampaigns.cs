@@ -18,5 +18,6 @@ namespace Best.Data.Interfaces
         Task Update(Campaign Campaign);
         Task<int> Delete(Campaign Campaign);
         Task<int> DeleteCampaignsByUserId(string user_id);
+        Task<double> Rating(string Campaign_id);
     }
 }
