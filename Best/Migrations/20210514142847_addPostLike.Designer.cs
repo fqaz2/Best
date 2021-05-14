@@ -4,14 +4,16 @@ using Best.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Best.Migrations
 {
     [DbContext(typeof(BestContent))]
-    partial class BestContentModelSnapshot : ModelSnapshot
+    [Migration("20210514142847_addPostLike")]
+    partial class addPostLike
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -433,11 +435,11 @@ namespace Best.Migrations
             modelBuilder.Entity("Best.Data.Models.Like.PostLike", b =>
                 {
                     b.HasOne("Best.Areas.Identity.Data.BestUser", "BestUser")
-                        .WithMany("PostLike")
+                        .WithMany()
                         .HasForeignKey("BestUserId");
 
                     b.HasOne("Best.Data.Models.Post", "Post")
-                        .WithMany("Likes")
+                        .WithMany()
                         .HasForeignKey("PostId");
                 });
 

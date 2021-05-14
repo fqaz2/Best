@@ -1,5 +1,6 @@
 ﻿using Best.Areas.Identity.Data;
 using Best.Data.Models.Img;
+using Best.Data.Models.Like;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace Best.Data.Models
         public string mintext { get; set; }
         public virtual Campaign Campaign { get; set; }
         public virtual BestUser BestUser { get; set; }
+        public virtual IEnumerable<PostLike> Likes { get; set; }
         public virtual IEnumerable<PostImg> Carousel { get; set; }
         [NotMapped]
         public IFormFile ImgFile { get; set; }

@@ -10,6 +10,7 @@ using Best.Data.Models;
 using Best.Data.Interfaces;
 using Best.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
+using Best.Data.Models.Like;
 
 namespace Best.Controllers
 {
@@ -37,9 +38,9 @@ namespace Best.Controllers
         {
             if (id == null)
             {
-                return View(await _context.Post.ToListAsync());
+                return View(_posts.GetPosts.ToList());
             }
-            return View(await _context.Post.Where(p => p.Campaign.Id == id).ToListAsync());
+            return View(_posts.GetPostsByCampaignId(id).ToList());
         }
 
         // GET: Posts/Details/5
@@ -169,6 +170,23 @@ namespace Best.Controllers
         private bool PostExists(string id)
         {
             return _context.Post.Any(e => e.Id == id);
+        }
+        [HttpPost]
+        public async Task<JsonResult> LikePost(string PostId, string UserId)
+        {
+            var result = _context.PostLike.Where(l => l.Post.Id == PostId && l.BestUser.Id == UserId).ToList();
+            if (result.Count != 0)
+            {
+                _context.PostLike.RemoveRange(result);
+                await _context.SaveChangesAsync();
+                return Json(false);
+            }
+            PostLike like = new PostLike();
+            like.Post = await _context.Post.FirstOrDefaultAsync(p => p.Id == PostId);
+            like.BestUser = await _context.BestUser.FirstOrDefaultAsync(u => u.Id == UserId);
+            _context.Add(like);
+            await _context.SaveChangesAsync();
+            return Json(true);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Best.Areas.Identity.Data;
 using Best.Data.Models;
 using Best.Data.Models.Img;
+using Best.Data.Models.Like;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -26,6 +27,7 @@ namespace Best.Data
         //post
         public DbSet<Post> Post { get; set; }
         public DbSet<PostImg> PostImg { get; set; }
+        public DbSet<PostLike> PostLike { get; set; }
         //post
         //campaign
         //user

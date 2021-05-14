@@ -10,3 +10,6 @@
 @inject IDropbox _dropbox
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @addTagHelper *, Best
+
+@inject UserManager<BestUser> UserManager
+@inject SignInManager<BestUser> SignInManager

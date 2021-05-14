@@ -19,7 +19,7 @@ namespace Best.Data.Repository
             _postImg = postImg;
             _dropbox = dropbox;
         }
-        public IEnumerable<Post> GetPosts => bestContent.Post.Include(imgs => imgs.Carousel).Include(c => c.Campaign).Include(u => u.BestUser);
+        public IEnumerable<Post> GetPosts => bestContent.Post.Include(imgs => imgs.Carousel).Include(c => c.Campaign).Include(u => u.BestUser).Include(l=> l.Likes);
         public Post GetPostById(string post_id) => GetPosts.FirstOrDefault(p => p.Id == post_id);
         public IEnumerable<Post> GetPostsByCampaignId(string Campaign_Id) => GetPosts.Where(p => p.Campaign.Id == Campaign_Id);
         public IEnumerable<Post> GetPostsByUserId(string user_Id) => GetPosts.Where(p => p.Campaign.BestUser.Id == user_Id);
