@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Campaigns</h1>
 <div class="card-columns">
     @foreach (var Campaign in Model)
     {
@@ -62,10 +62,13 @@
                 {
                     <a class="btn btn-primary btn-sm" href="#" role="button"> @Campaign.Topic.Name </a>
                 }
-                <p class="card-text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. </p>
+            <p class="card-text">@Campaign.shortText</p>
             </div>
-            <div class="card-footer d-flex justify-content-end">
-                <a asp-action="Details" asp-route-id="@Campaign.Id" class="btn btn-primary align-self-end">Подробнее</a>
+            <div class="card-footer">
+                <p class="d-flex flex-column justify-content-end" style="margin-bottom: 0px;">
+                    <a asp-action="Details" asp-route-id="@Campaign.Id" class="btn btn-primary align-self-end">Подробнее</a>
+                    <small class="text-muted text-right">@Campaign.createData</small>
+                </p>
             </div>
         </div>
     }

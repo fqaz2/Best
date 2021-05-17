@@ -10,7 +10,7 @@
 <h4>Campaign</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12">
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="BestUser.Id" value="@UserManager.GetUserId(User)" />
@@ -20,9 +20,15 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Bonuses" class="control-label"></label>
-                <input asp-for="Bonuses" class="form-control" />
-                <span asp-validation-for="Bonuses" class="text-danger"></span>
+                <label asp-for="shortText" class="control-label"></label>
+                <input asp-for="shortText" class="form-control" />
+                <span asp-validation-for="shortText" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="text" class="control-label"></label>
+                <textarea asp-for="text" id="text" onchange="addInMarkdown('mark2','text')" class="form-control"></textarea>
+                <span asp-validation-for="text" class="text-danger"></span>
+                <markdown id="mark2" />
             </div>
             <div class="form-group">
                 <label asp-for="Topic" class="control-label"></label>

@@ -18,6 +18,7 @@ namespace Best.Data.Models
         public string Name { get; set; }
         public string text { get; set; }
         public string mintext { get; set; }
+        public DateTime createData { get; set; }
         public virtual Campaign Campaign { get; set; }
         public virtual BestUser BestUser { get; set; }
         public virtual IEnumerable<PostLike> Likes { get; set; }

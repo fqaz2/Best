@@ -27,14 +27,16 @@ namespace Best.Data.Repository
         //CRUD
         public async Task<int> Create(Post post)
         {
+            post.createData = DateTime.Now;
             bestContent.Post.Add(post);
-            await _dropbox.CreateFolder($"/Posts/{post.Id}");
+            await _dropbox.CreateFolder($"/Users/{post.BestUser.Id}/Campaigns/{post.Campaign.Id}/Posts/{post.Id}");
             if (post.ImgFile != null) await _postImg.CreateAvatar(post);
             if (post.ImgsFile != null) await _postImg.CreateImgs(post);
             return await bestContent.SaveChangesAsync();
         }
         public async Task Update(Post post)
         {
+            post.createData = DateTime.Now;
             post.Campaign = await bestContent.Campaign.FirstOrDefaultAsync(c => c.Id == post.Campaign.Id);
             post.BestUser = await bestContent.BestUser.FirstOrDefaultAsync(u => u.Id == post.BestUser.Id);
             bestContent.Post.Update(post);

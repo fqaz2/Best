@@ -4,14 +4,16 @@ using Best.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Best.Migrations
 {
     [DbContext(typeof(BestContent))]
-    partial class BestContentModelSnapshot : ModelSnapshot
+    [Migration("20210517082018_addtext")]
+    partial class addtext
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,9 +112,6 @@ namespace Best.Migrations
 
                     b.Property<string>("TopicId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("createData")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("shortText")
                         .HasColumnType("nvarchar(max)");
@@ -233,9 +232,6 @@ namespace Best.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("createData")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("mintext")
                         .HasColumnType("nvarchar(max)");

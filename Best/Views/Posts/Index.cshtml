@@ -15,34 +15,32 @@
                 <img class="img-fluid" src="@await _dropbox.getImgByUrl(post.Img)" alt="Card image cap">
             }
             <div class="card-body">
-                <h5 class="card-title">
-                    sdfg
-                </h5>
-                <p class="card-text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. </p>
+                <p class="card-text">@Html.DisplayFor(p => post.mintext)</p>
             </div>
-            <div class="card-footer d-flex justify-content-end">
-                @if (SignInManager.IsSignedIn(User))
-                {
-                    @if (post.Likes.Any(l => l.BestUserId == UserManager.GetUserId(User)))
+            <div class="card-footer">
+                <p class="d-flex justify-content-end" style="margin-bottom: 0px;">
+                    @if (SignInManager.IsSignedIn(User))
                     {
-                        <button type="button" class="btn btn-primary" data-id="@post.Id" onclick="like_func(this)">
-                            @post.Likes.Count()
-                            <svg id="like" data-id="@post.Id" onclick="like_func(this)" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
-                            </svg>
-                        </button>
+                        @if (post.Likes.Any(l => l.BestUserId == UserManager.GetUserId(User)))
+                        {
+                            <button type="button" class="btn btn-primary" data-id="@post.Id" onclick="like_func(this)">
+                                @post.Likes.Count()
+                                <svg id="like" data-id="@post.Id" onclick="like_func(this)" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
+                                </svg>
+                            </button>
 
-                    }
-                    else
-                    {
-                        <button type="button" class="btn btn-primary" data-id="@post.Id" onclick="like_func(this)">
-                            @post.Likes.Count()
-                            <svg id="like" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
-                                <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
-                            </svg>
-                        </button>
-                    }
-                    <script language="javascript">
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-primary" data-id="@post.Id" onclick="like_func(this)">
+                                @post.Likes.Count()
+                                <svg id="like" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                                    <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
+                                </svg>
+                            </button>
+                        }
+                        <script language="javascript">
                         const like_func = (t) => {
                         console.log("clicked");
                         $.ajax({
@@ -66,9 +64,14 @@
                         });
                         return false;
                         }
-                    </script>
-                }
-                <a asp-action="Details" asp-route-id="@post.Id" class="btn btn-primary align-self-end">Подробнее</a>
+                        </script>
+                    }
+                    <a asp-action="Details" asp-route-id="@post.Id" class="btn btn-primary align-self-end">Подробнее</a>
+                    
+                </p>
+                <p class="d-flex justify-content-end" style="margin-bottom:0px;">
+                    <small class="text-muted text-right">@post.createData</small>
+                </p>
             </div>
         </div>
     }

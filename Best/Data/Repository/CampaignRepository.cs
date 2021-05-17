@@ -34,6 +34,7 @@ namespace Best.Data.Repository
         //CRUD
         public async Task<int> Create(Campaign Campaign)
         {
+            Campaign.createData = DateTime.Now;
             bestContent.Campaign.Add(Campaign);
             await _dropbox.CreateFolder($"/Users/{Campaign.BestUser.Id}/Campaigns/{Campaign.Id}");
             if (Campaign.ImgFile != null) await _CampaignImg.CreateAvatar(Campaign);
@@ -43,6 +44,7 @@ namespace Best.Data.Repository
         }
         public async Task Update(Campaign Campaign)
         {
+            Campaign.createData = DateTime.Now;
             Campaign.Topic = await bestContent.Topic.FirstOrDefaultAsync(t => t.Id == Campaign.Topic.Id); ;
             Campaign.BestUser = await bestContent.BestUser.FirstOrDefaultAsync(u => u.Id == Campaign.BestUser.Id);
             bestContent.Campaign.Update(Campaign);
