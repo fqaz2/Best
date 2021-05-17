@@ -6,7 +6,7 @@
 @{
     ViewData["Title"] = "My posts";
     ViewData["ActivePage"] = ManageNavPages.Posts;
-    IEnumerable<Post> posts = Posts.GetPostsByUserId(UserManager.GetUserId(User));
+    List<Post> posts = Posts.GetPostsByUserId(UserManager.GetUserId(User)).ToList();
 }
 <h4>@ViewData["Title"]</h4>
 <div class="row">
@@ -25,12 +25,12 @@
                 @foreach (var post in posts)
                 {
                     <tr>
-                        <td>@post.Name</td>
+                        <td>@Html.DisplayFor(p => post.Name)</td>
                         <td>
                             @post.mintext
                         </td>
                         <td>
-                            <a asp-controller="Campaigns" asp-action="Details" asp-route-id="@post.Campaign.Id">@post.Campaign.Name</a>
+                            <a asp-controller="Campaigns" asp-action="Details" asp-route-id="@post.CampaignId">@post.Campaign.Name</a>
                         </td>
                         <td>
                             <a class="btn btn-primary" asp-controller="Posts" asp-action="Edit" asp-route-id="@post.Id">Edit</a>

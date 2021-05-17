@@ -38,7 +38,7 @@ namespace Best.Controllers
         {
             var newpost = _posts.GetPostById(post.Id);
             newpost.ImgsFile = post.ImgsFile;
-            if (newpost.ImgsFile != null) await _postImg.UpdateImgs(newpost);
+            if (newpost.ImgsFile != null) await _postImg.AddImgs(newpost);
             return RedirectToRoute(new { controller = "Posts", action = "Edit", id = post.Id });
         }
         public async Task<IActionResult> IndexCampaignImg(Campaign Campaign)

@@ -65,32 +65,18 @@ namespace Best.Controllers
         {
             if (!_signInManager.IsSignedIn(User))
             {
-                return RedirectToAction(nameof(Index));
-            }
-            if (id == null)
-            {
-                return View();
-            }
-            Post post = new Post();
-            post.Campaign = _Campaigns.GetCampaignByIdForUser(_userManager.GetUserId(User), id);
-            if (post == null)
-            {
                 return NotFound();
             }
-            return View(post);
+            return View(new Post() { CampaignId = id});
         }
 
         // POST: Posts/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Post post)
         {
             if (ModelState.IsValid)
             {
-                post.Campaign = _Campaigns.GetCampaignById(post.Campaign.Id);
-                post.BestUser = await _userManager.FindByIdAsync(post.BestUser.Id);
                 await _posts.Create(post);
                 return RedirectToAction(nameof(Index));
             }
@@ -100,15 +86,10 @@ namespace Best.Controllers
         // GET: Posts/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
-            if (!_signInManager.IsSignedIn(User))
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            if (id == null)
+            if (id == null || !_signInManager.IsSignedIn(User))
             {
                 return NotFound();
             }
-
             Post post = new Post();
             post = _posts.GetPostByIdForUser(_userManager.GetUserId(User), id);
 
@@ -137,12 +118,7 @@ namespace Best.Controllers
         // GET: Posts/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
-            if (!_signInManager.IsSignedIn(User))
-            {
-                return RedirectToAction(nameof(Index));
-            }
-
-            if (id == null)
+            if (!_signInManager.IsSignedIn(User) || id == null)
             {
                 return NotFound();
             }
@@ -162,8 +138,7 @@ namespace Best.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var post = _posts.GetPostById(id);
-            await _posts.Delete(post);
+            await _posts.Delete(id);
             return RedirectToAction(nameof(Index));
         }
 
@@ -174,19 +149,7 @@ namespace Best.Controllers
         [HttpPost]
         public async Task<JsonResult> LikePost(string PostId, string UserId)
         {
-            var result = _context.PostLike.Where(l => l.Post.Id == PostId && l.BestUser.Id == UserId).ToList();
-            if (result.Count != 0)
-            {
-                _context.PostLike.RemoveRange(result);
-                await _context.SaveChangesAsync();
-                return Json(false);
-            }
-            PostLike like = new PostLike();
-            like.Post = await _context.Post.FirstOrDefaultAsync(p => p.Id == PostId);
-            like.BestUser = await _context.BestUser.FirstOrDefaultAsync(u => u.Id == UserId);
-            _context.Add(like);
-            await _context.SaveChangesAsync();
-            return Json(true);
+            return Json(_posts.LikePost(PostId, UserId));
         }
     }
 }

@@ -30,12 +30,7 @@ namespace Best.Controllers
 
         public IActionResult Index()
         {
-            List<ObjectTime> list = new List<ObjectTime>();
-
-            _posts.GetPosts.ToList().ForEach(p => list.Add(new ObjectTime() { Obj = p, CreateDate = p.createData, TypeObj = p.GetType() }));
-            _campaigns.GetCampaigns.ToList().ForEach(c => list.Add(new ObjectTime() { Obj = c, CreateDate = c.createData, TypeObj = c.GetType() }));
-
-            return View(list.OrderBy(l => l.CreateDate));
+            return View();
         }
 
         public IActionResult Privacy()

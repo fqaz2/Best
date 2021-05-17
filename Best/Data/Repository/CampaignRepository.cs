@@ -55,7 +55,6 @@ namespace Best.Data.Repository
         }
         public async Task<int> Delete(Campaign Campaign)
         {
-            await _posts.DeletePostsByCampaignId(Campaign.Id);
             if (Campaign.Img != null || Campaign.Carousel != null) await _CampaignImg.DeleteImgs(Campaign);
             Campaign = GetCampaignById(Campaign.Id);
             bestContent.Campaign.Remove(Campaign);

@@ -14,7 +14,7 @@
     <div class="col-md-12">
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="BestUser.Id" value="@UserManager.GetUserId(User)" />
+            <input type="hidden" asp-for="BestUserId" value="@UserManager.GetUserId(User)" />
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -33,8 +33,8 @@
                 <markdown id="mark2" />
             </div>
             <div class="form-group">
-                <label asp-for="Campaign" class="control-label"></label>
-                <select class="custom-select" asp-for="Campaign.Id" required>
+                <label asp-for="CampaignId" class="control-label"></label>
+                <select class="custom-select" asp-for="CampaignId" required>
                     @foreach (var Campaign in Campaigns)
                     {
                         <option value="@Campaign.Id">@Campaign.Name</option>

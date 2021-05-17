@@ -12,12 +12,9 @@ namespace Best.Data.Interfaces
         public IEnumerable<PostImg> GetImgs { get; }
         public IEnumerable<PostImg> GetImgsByPostId(string post_id);
         public PostImg GetImgById(string img_id);
-        public Task CreateAvatar(Post post);
-        public Task UpdateAvatar(Post post);
+        public Task AddAvatar(Post post);
         public Task DeleteAvatar(Post post);
-        public Task CreateImgs(Post post);
-        public Task UpdateImgs(Post post); 
-        public Task DeleteImgs(Post post);
+        public Task AddImgs(Post post);
         Task DeleteImg(PostImg postImg);
     }
 }

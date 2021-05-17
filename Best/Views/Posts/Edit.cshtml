@@ -15,7 +15,7 @@
         <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="BestUser.Id" />
+            <input type="hidden" asp-for="BestUserId" />
             <input type="hidden" asp-for="Img" />
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
@@ -36,7 +36,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Campaign" class="control-label"></label>
-                <select class="custom-select" asp-for="Campaign.Id" required>
+                <select class="custom-select" asp-for="CampaignId" required>
                     @foreach (var Campaign in Campaigns)
                     {
                         <option value="@Campaign.Id">@Campaign.Name</option>

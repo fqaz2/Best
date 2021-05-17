@@ -19,7 +19,11 @@ namespace Best.Data.Models
         public string text { get; set; }
         public string mintext { get; set; }
         public DateTime createData { get; set; }
+        [ForeignKey("Campaign")]
+        public string CampaignId { get; set; }
         public virtual Campaign Campaign { get; set; }
+        [ForeignKey("BestUser")]
+        public string BestUserId { get; set; }
         public virtual BestUser BestUser { get; set; }
         public virtual IEnumerable<PostLike> Likes { get; set; }
         public virtual IEnumerable<PostImg> Carousel { get; set; }
