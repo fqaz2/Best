@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Best.Migrations
 {
     [DbContext(typeof(BestContent))]
-    [Migration("20210514143343_addPostLikev2")]
-    partial class addPostLikev2
+    [Migration("20210520162553_addcascadev6")]
+    partial class addcascadev6
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -110,14 +110,17 @@ namespace Best.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TitleImg")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("TopicId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("createData")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("shortText")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("text")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -233,6 +236,9 @@ namespace Best.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("createData")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("mintext")
                         .HasColumnType("nvarchar(max)");
 
@@ -246,6 +252,30 @@ namespace Best.Migrations
                     b.HasIndex("CampaignId");
 
                     b.ToTable("Post");
+                });
+
+            modelBuilder.Entity("Best.Data.Models.Rating.CampaignRating", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("BestUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CampaignId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("rating")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BestUserId");
+
+                    b.HasIndex("CampaignId");
+
+                    b.ToTable("CampaignRating");
                 });
 
             modelBuilder.Entity("Best.Data.Models.Topic", b =>
@@ -451,6 +481,17 @@ namespace Best.Migrations
 
                     b.HasOne("Best.Data.Models.Campaign", "Campaign")
                         .WithMany("Posts")
+                        .HasForeignKey("CampaignId");
+                });
+
+            modelBuilder.Entity("Best.Data.Models.Rating.CampaignRating", b =>
+                {
+                    b.HasOne("Best.Areas.Identity.Data.BestUser", "BestUser")
+                        .WithMany("CampaignRating")
+                        .HasForeignKey("BestUserId");
+
+                    b.HasOne("Best.Data.Models.Campaign", "Campaign")
+                        .WithMany("Ratings")
                         .HasForeignKey("CampaignId");
                 });
 

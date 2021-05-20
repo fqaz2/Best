@@ -53,8 +53,7 @@ namespace Best.Controllers
             {
                 return RedirectToAction(nameof(Index));
             }
-            Campaign.Topic = _topics.GetTopicById(Campaign.Topic.Id);
-            Campaign.BestUser = await _userManager.FindByIdAsync(Campaign.BestUser.Id);
+
             await _Campaigns.Create(Campaign);
 
             return RedirectToAction(nameof(Index));
@@ -68,6 +67,7 @@ namespace Best.Controllers
             }
 
             var Campaign = _Campaigns.GetCampaignById(id);
+
             if (Campaign == null)
             {
                 return NotFound();
@@ -77,21 +77,18 @@ namespace Best.Controllers
         }
         public IActionResult Edit(string id)
         {
-            if (!_signInManager.IsSignedIn(User))
-            {
-                return RedirectToAction(nameof(Index));
-            }
-
-            if (id == null)
+            if (!_signInManager.IsSignedIn(User) || id == null)
             {
                 return NotFound();
             }
 
             var Campaign = _Campaigns.GetCampaignByIdForUser(_userManager.GetUserId(User), id);
+
             if (Campaign == null)
             {
                 return NotFound();
             }
+
             return View(Campaign);
         }
 
@@ -114,17 +111,13 @@ namespace Best.Controllers
         }
         public IActionResult Delete(string id)
         {
-            if (!_signInManager.IsSignedIn(User))
-            {
-                return RedirectToAction(nameof(Index));
-            }
-
-            if (id == null)
+            if (!_signInManager.IsSignedIn(User) || id == null)
             {
                 return NotFound();
             }
 
             var Campaign = _Campaigns.GetCampaignByIdForUser(_userManager.GetUserId(User), id);
+
             if (Campaign == null)
             {
                 return NotFound();
@@ -141,14 +134,8 @@ namespace Best.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var Campaign = _Campaigns.GetCampaignById(id);
+            await _Campaigns.Delete(id);
 
-            if (Campaign.BestUser.Id != _userManager.GetUserId(User))
-            {
-                return RedirectToAction(nameof(Index));
-            }
-
-            await _Campaigns.Delete(Campaign);
             return RedirectToAction(nameof(Index));
         }
         private bool CampaignExists(string id)

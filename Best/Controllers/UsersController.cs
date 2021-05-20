@@ -70,8 +70,7 @@ namespace Best.Controllers
         {
             try
             {
-                bestUser = _bestUser.GetUserById(bestUser.Id);
-                await _bestUser.Delete(bestUser);
+                await _bestUser.Delete(bestUser.Id);
 
                 if (bestUser.Id == _userManager.GetUserId(User))
                 {

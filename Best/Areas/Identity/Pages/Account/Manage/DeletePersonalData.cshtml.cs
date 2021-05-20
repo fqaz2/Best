@@ -71,13 +71,7 @@ namespace Best.Areas.Identity.Pages.Account.Manage
                 }
             }
 
-            var result = await _bestUser.Delete(user);
-            if (result == 0)
-            {
-                throw new InvalidOperationException($"Unexpected error occurred deleting user with ID '{user.Id}'.");
-            }
-
-            await _signInManager.SignOutAsync();
+            await _bestUser.Delete(user.Id);
 
             _logger.LogInformation("User with ID '{UserId}' deleted themselves.", user.Id);
 

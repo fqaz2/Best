@@ -12,12 +12,9 @@ namespace Best.Data.Interfaces
         public IEnumerable<CampaignImg> GetImgs { get; }
         public IEnumerable<CampaignImg> GetImgsByCampaignId(string Campaign_id);
         public CampaignImg GetImgById(string img_id);
-        public Task CreateAvatar(Campaign Campaign);
-        public Task UpdateAvatar(Campaign Campaign);
+        public Task AddAvatar(Campaign Campaign);
         public Task DeleteAvatar(Campaign Campaign);
-        public Task CreateImgs(Campaign Campaign);
-        public Task UpdateImgs(Campaign Campaign);
-        public Task DeleteImgs(Campaign Campaign);
-        Task DeleteImg(CampaignImg CampaignImg);
+        public Task AddImgs(Campaign Campaign);
+        Task DeleteImg(CampaignImg campaignImg);
     }
 }

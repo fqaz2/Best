@@ -26,57 +26,37 @@ namespace Best.Data.Repository
         public IEnumerable<CampaignImg> GetImgs => bestContent.CampaignImg.Include(c => c.Campaign);
         public IEnumerable<CampaignImg> GetImgsByCampaignId(string campaign_id) => GetImgs.Where(p => p.Campaign.Id == campaign_id);
         public CampaignImg GetImgById(string img_id) => GetImgs.FirstOrDefault(i => i.Id == img_id);
-        public async Task CreateAvatar(Campaign Campaign)
+        public async Task AddAvatar(Campaign campaign)
         {
-            var uploadPath = $"/Users/{Campaign.BestUser.Id}/Campaigns/{Campaign.Id}";
-            Campaign.Img = await _dropbox.AddAvatarImg(uploadPath, Campaign.ImgFile);
-            bestContent.Campaign.Add(Campaign);
-        }
-        public async Task UpdateAvatar(Campaign Campaign)
-        {
-            var uploadPath = $"/Users/{Campaign.BestUser.Id}/Campaigns/{Campaign.Id}";
-            Campaign.Img = await _dropbox.AddAvatarImg(uploadPath, Campaign.ImgFile);
-
-            bestContent.Campaign.Update(Campaign);
+            var uploadPath = $"/Users/{campaign.BestUserId}/Campaigns/{campaign.Id}";
+            campaign.Img = await _dropbox.AddAvatarImg(uploadPath, campaign.ImgFile);
+            bestContent.Campaign.Update(campaign);
             await bestContent.SaveChangesAsync();
         }
-        public async Task DeleteAvatar(Campaign Campaign)
+        public async Task DeleteAvatar(Campaign campaign)
         {
-            var uploadPath = $"/Users/{Campaign.BestUser.Id}/Campaigns/{Campaign.Id}";
-            Campaign.Img = await _dropbox.DeleteAvatarImg(uploadPath);
-            bestContent.Campaign.Update(Campaign);
-        }
-        public async Task DeleteImg(CampaignImg CampaignImg)
-        {
-            await _dropbox.DeleteFolder(CampaignImg.Url);
-            bestContent.CampaignImg.Remove(CampaignImg);
+            var uploadPath = $"/Users/{campaign.BestUserId}/Campaigns/{campaign.Id}";
+            campaign.Img = await _dropbox.DeleteAvatarImg(uploadPath);
+            bestContent.Campaign.Update(campaign);
             await bestContent.SaveChangesAsync();
         }
-        public async Task CreateImgs(Campaign Campaign)
+        public async Task AddImgs(Campaign campaign)
         {
-            var uploadPath = $"/Users/{Campaign.BestUser.Id}/Campaigns/{Campaign.Id}";
-            List<Img> carousel = await _dropbox.AddImgs(uploadPath, Campaign.ImgsFile);
-            Campaign.Carousel = carousel.Select( img => new CampaignImg() { Alt = img.Alt, Url = img.Url, Campaign = Campaign }).ToList();
-            bestContent.Campaign.Add(Campaign);
-        }
-        public async Task UpdateImgs(Campaign Campaign)
-        {
-            var uploadPath = $"/Users/{Campaign.BestUser.Id}/Campaigns/{Campaign.Id}";
-            List<Img> imgs = await _dropbox.AddImgs(uploadPath, Campaign.ImgsFile);
-            var carousel = Campaign.Carousel.ToList();
-            carousel.AddRange(imgs.Select(img => new CampaignImg() { Alt = img.Alt, Url = img.Url, Campaign = Campaign }).ToList());
-            Campaign.Carousel = carousel;
-            bestContent.Campaign.Update(Campaign);
+            var uploadPath = $"/Users/{campaign.BestUserId}/Campaigns/{campaign.Id}";
+            List<Img> imgs = await _dropbox.AddImgs(uploadPath, campaign.ImgsFile);
+            List<CampaignImg> carousel = new List<CampaignImg>();
+            if (bestContent.CampaignImg.Where(c => c.CampaignId == campaign.Id).Any())
+                carousel = bestContent.CampaignImg.Include(c => c.Campaign).ToList();
+            carousel.AddRange(imgs.Select(img => new CampaignImg() { Alt = img.Alt, Url = img.Url, Campaign = campaign }).ToList());
+            campaign.Carousel = carousel;
+            bestContent.Campaign.Update(campaign);
             await bestContent.SaveChangesAsync();
         }
-        public async Task DeleteImgs(Campaign Campaign)
+        public async Task DeleteImg(CampaignImg campaignImg)
         {
-            var imgs = GetImgsByCampaignId(Campaign.Id).ToList();
-            foreach (var img in imgs)
-            {
-                await DeleteImg(img);
-            }
-            await _dropbox.DeleteFolder($"/Users/{Campaign.BestUser.Id}/Campaigns/{Campaign.Id}");
+            await _dropbox.DeleteFolder(campaignImg.Url);
+            bestContent.CampaignImg.Remove(campaignImg);
+            await bestContent.SaveChangesAsync();
         }
     }
 }

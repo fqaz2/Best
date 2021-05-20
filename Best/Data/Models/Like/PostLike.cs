@@ -12,7 +12,7 @@ namespace Best.Data.Models.Like
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
         [ForeignKey("Post")]
-        public string PostId { get; set; }
+        public string? PostId { get; set; }
         [ForeignKey("BestUser")]
         public string BestUserId { get; set; }
         public virtual Post Post { get; set; }

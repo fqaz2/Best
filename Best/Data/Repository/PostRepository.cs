@@ -51,9 +51,15 @@ namespace Best.Data.Repository
         public async Task Delete(string postId)
         {
             Post post = GetPostById(postId);
-            await _dropbox.DeleteFolder($"/Users/{post.BestUserId}/Campaigns/{post.CampaignId}/Posts/{post.Id}");
-            bestContent.Post.Remove(post);
+            //delete when create cascade delete
+            //start
+            bestContent.PostImg.RemoveRange(post.Carousel);
+            bestContent.PostLike.RemoveRange(post.Likes);
+            //end
+            bestContent.Remove(post);
             await bestContent.SaveChangesAsync();
+
+            await _dropbox.DeleteFolder($"/Users/{post.BestUserId}/Campaigns/{post.CampaignId}/Posts/{post.Id}");
         }
         public async Task<bool> LikePost(string postId, string userId)
         {

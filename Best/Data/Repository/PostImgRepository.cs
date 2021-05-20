@@ -40,12 +40,6 @@ namespace Best.Data.Repository
             bestContent.Post.Update(post);
             await bestContent.SaveChangesAsync();
         }
-        public async Task DeleteImg(PostImg postImg)
-        {
-            await _dropbox.DeleteFolder(postImg.Url);
-            bestContent.PostImg.Remove(postImg);
-            await bestContent.SaveChangesAsync();
-        }
         public async Task AddImgs(Post post)
         {
             var uploadPath = $"/Users/{post.BestUserId}/Campaigns/{post.CampaignId}/Posts/{post.Id}";
@@ -58,5 +52,12 @@ namespace Best.Data.Repository
             bestContent.Post.Update(post);
             await bestContent.SaveChangesAsync();
         }
+        public async Task DeleteImg(PostImg postImg)
+        {
+            await _dropbox.DeleteFolder(postImg.Url);
+            bestContent.PostImg.Remove(postImg);
+            await bestContent.SaveChangesAsync();
+        }
+        
     }
 }

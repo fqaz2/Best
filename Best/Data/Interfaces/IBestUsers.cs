@@ -10,6 +10,6 @@ namespace Best.Data.Interfaces
     {
         IEnumerable<BestUser> GetUsers { get; }
         BestUser GetUserById(string user_id);
-        Task<int> Delete(BestUser bestUser);
+        Task Delete(String bestUserId);
     }
 }

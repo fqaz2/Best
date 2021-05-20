@@ -32,43 +32,45 @@ namespace Best.Data.Repository
         public IEnumerable<Campaign> GetCampaignsByUserId(string user_id) => GetCampaigns.Where(c => c.BestUser.Id == user_id);
         public Campaign GetCampaignByIdForUser(string user_id, string Campaign_id) => GetCampaignsByUserId(user_id).FirstOrDefault(c => c.Id == Campaign_id);
         //CRUD
-        public async Task<int> Create(Campaign Campaign)
+        public async Task Create(Campaign Campaign)
         {
             Campaign.createData = DateTime.Now;
             bestContent.Campaign.Add(Campaign);
-            await _dropbox.CreateFolder($"/Users/{Campaign.BestUser.Id}/Campaigns/{Campaign.Id}");
-            if (Campaign.ImgFile != null) await _CampaignImg.CreateAvatar(Campaign);
-            if (Campaign.ImgsFile != null) await _CampaignImg.CreateImgs(Campaign);
+            await bestContent.SaveChangesAsync();
 
-            return await bestContent.SaveChangesAsync();
+            await _dropbox.CreateFolder($"/Users/{Campaign.BestUserId}/Campaigns/{Campaign.Id}");
+            
+            if (Campaign.ImgFile != null) await _CampaignImg.AddAvatar(Campaign);
+            if (Campaign.ImgsFile != null) await _CampaignImg.AddImgs(Campaign);
         }
         public async Task Update(Campaign Campaign)
         {
             Campaign.createData = DateTime.Now;
-            Campaign.Topic = await bestContent.Topic.FirstOrDefaultAsync(t => t.Id == Campaign.Topic.Id); ;
-            Campaign.BestUser = await bestContent.BestUser.FirstOrDefaultAsync(u => u.Id == Campaign.BestUser.Id);
             bestContent.Campaign.Update(Campaign);
             await bestContent.SaveChangesAsync();
 
-            if (Campaign.ImgFile != null) await _CampaignImg.UpdateAvatar(Campaign);
-            if (Campaign.ImgsFile != null) await _CampaignImg.UpdateImgs(Campaign);
+            if (Campaign.ImgFile != null) await _CampaignImg.AddAvatar(Campaign);
+            if (Campaign.ImgsFile != null) await _CampaignImg.AddImgs(Campaign);
         }
-        public async Task<int> Delete(Campaign Campaign)
+        public async Task Delete(string campaignId)
         {
-            if (Campaign.Img != null || Campaign.Carousel != null) await _CampaignImg.DeleteImgs(Campaign);
-            Campaign = GetCampaignById(Campaign.Id);
-            bestContent.Campaign.Remove(Campaign);
-            return await bestContent.SaveChangesAsync();
-        }
-        public async Task<int> DeleteCampaignsByUserId(string user_id)
-        {
-            var Campaigns = GetCampaignsByUserId(user_id).ToList();
-            int result = 0;
-            foreach (var Campaign in Campaigns)
-            {
-                result += await Delete(Campaign);
-            }
-            return result;
+            Campaign campaign = GetCampaignById(campaignId);
+            //delete when create cascade delete
+            //start
+            campaign.Posts.ToList()
+                .ForEach(p =>
+                {
+                    p = _posts.GetPostById(p.Id);
+                    bestContent.PostImg.RemoveRange(p.Carousel);
+                    bestContent.PostLike.RemoveRange(p.Likes);
+                });
+            bestContent.Post.RemoveRange(campaign.Posts);
+            bestContent.CampaignRating.RemoveRange(campaign.Ratings);
+            //end
+            bestContent.Remove(campaign);
+            await bestContent.SaveChangesAsync();
+
+            await _dropbox.DeleteFolder($"/Users/{campaign.BestUserId}/Campaigns/{campaign.Id}");
         }
         public async Task<double> Rating(string Campaign_id)
         {

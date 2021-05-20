@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Best.Migrations
 {
     [DbContext(typeof(BestContent))]
-    [Migration("20210517123526_addCascade")]
-    partial class addCascade
+    [Migration("20210517172157_addCascadev4")]
+    partial class addCascadev4
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -56,7 +56,7 @@ namespace Best.Controllers
         {
             var newcampaign = _Campaigns.GetCampaignById(Campaign.Id);
             newcampaign.ImgsFile = Campaign.ImgsFile;
-            if (newcampaign.ImgsFile != null) await _CampaignImg.UpdateImgs(newcampaign);
+            if (newcampaign.ImgsFile != null) await _CampaignImg.AddImgs(newcampaign);
             return RedirectToRoute(new { controller = "Campaigns", action = "Edit", id = Campaign.Id });
         }
 
