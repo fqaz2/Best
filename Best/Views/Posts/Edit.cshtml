@@ -3,7 +3,7 @@
 @inject ICampaigns _campaigns
 @{
     ViewData["Title"] = "Edit";
-    IEnumerable<Campaign> Campaigns = _campaigns.GetCampaignsByUserId(UserManager.GetUserId(User));
+    IEnumerable<Campaign> Campaigns = _campaigns.GetCampaignsByUserId(Model.BestUserId);
 }
 
 <h1>Edit</h1>

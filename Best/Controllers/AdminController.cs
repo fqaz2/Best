@@ -1,4 +1,5 @@
 ﻿using Best.Areas.Identity.Data;
+using Best.Data.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,11 +14,16 @@ namespace Best.Controllers
         private readonly UserManager<BestUser> _userManager;
         private readonly SignInManager<BestUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        public AdminController( UserManager<BestUser> userManager, SignInManager<BestUser> signInManager, RoleManager<IdentityRole> roleManager)
+        private readonly ICampaigns _campaigns;
+        private readonly IPosts _posts;
+        public AdminController( UserManager<BestUser> userManager, SignInManager<BestUser> signInManager, RoleManager<IdentityRole> roleManager, ICampaigns campaigns, IPosts posts)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+
+            _campaigns = campaigns;
+            _posts = posts;
         }
         public async Task<bool> IsAdmin()
         {
@@ -33,6 +39,16 @@ namespace Best.Controllers
         {
             if (!await IsAdmin()) return NotFound();
             return View();
+        }
+        public async Task<IActionResult> Campaigns()
+        {
+            if (!await IsAdmin()) return NotFound();
+            return View(_campaigns.GetCampaigns.ToList());
+        }
+        public async Task<IActionResult> Posts()
+        {
+            if (!await IsAdmin()) return NotFound();
+            return View(_posts.GetPosts.ToList());
         }
     }
 }
