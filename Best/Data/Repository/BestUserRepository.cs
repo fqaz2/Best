@@ -11,6 +11,7 @@ namespace Best.Data.Repository
 {
     public class BestUserRepository : IBestUsers
     {
+        //taste side branch
         private readonly BestContent bestContent;
         private readonly IDropbox _dropbox;
         private readonly SignInManager<BestUser> _signInManager;
