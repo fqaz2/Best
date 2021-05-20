@@ -10,17 +10,21 @@
     user = _bestUsers.GetUserById(user.Id);
 }
 <ul class="nav nav-pills flex-column">
+    @* New nav *@
+    @if (isAdmin)
+    {
+        <li class="nav-item"><a class="nav-link @ManageNavPages.AdminPanelNavClass(ViewContext)" id="AdminPanel" asp-page="./AdminPanel">Admin panel</a></li>
+    }
+    @* end *@
     <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Profile</a></li>
     <li class="nav-item"><a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">Email</a></li>
+    @* New nav *@
     <li class="nav-item"><a class="nav-link @ManageNavPages.CampaignsNavClass(ViewContext)" id="Campaigns" asp-page="./Campaigns">My Campaigns</a></li>
     @if (user.Campaigns.Any())
     {
         <li class="nav-item"><a class="nav-link @ManageNavPages.PostsNavClass(ViewContext)" id="posts" asp-page="./Posts">My posts</a></li>
     }
-    @if (isAdmin)@*nice code*@
-    {
-        <li class="nav-item"><a class="nav-link @ManageNavPages.PostsNavClass(ViewContext)" id="posts" asp-page="./Posts">Users</a></li>
-    }
+    @* end *@
     <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Password</a></li>
     @if (hasExternalLogins)
     {
@@ -28,4 +32,5 @@
     }
     <li class="nav-item"><a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication">Two-factor authentication</a></li>
     <li class="nav-item"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Personal data</a></li>
+
 </ul>

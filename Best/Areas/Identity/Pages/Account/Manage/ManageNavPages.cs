@@ -23,9 +23,11 @@ namespace Best.Areas.Identity.Pages.Account.Manage
         public static string PersonalData => "PersonalData";
 
         public static string TwoFactorAuthentication => "TwoFactorAuthentication";
+        //add new nav
         public static string Campaigns => "Campaigns";
-        public static string Posts => "Posts";
-
+        public static string Posts => "Posts"; 
+        public static string AdminPanel => "AdminPanel";
+        //end
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
 
         public static string EmailNavClass(ViewContext viewContext) => PageNavClass(viewContext, Email);
@@ -41,9 +43,11 @@ namespace Best.Areas.Identity.Pages.Account.Manage
         public static string PersonalDataNavClass(ViewContext viewContext) => PageNavClass(viewContext, PersonalData);
 
         public static string TwoFactorAuthenticationNavClass(ViewContext viewContext) => PageNavClass(viewContext, TwoFactorAuthentication);
+        //add new nav
         public static string CampaignsNavClass(ViewContext viewContext) => PageNavClass(viewContext, Campaigns);
         public static string PostsNavClass(ViewContext viewContext) => PageNavClass(viewContext, Posts);
-
+        public static string AdminPanelNavClass(ViewContext viewContext) => PageNavClass(viewContext, AdminPanel);
+        //end
         private static string PageNavClass(ViewContext viewContext, string page)
         {
             var activePage = viewContext.ViewData["ActivePage"] as string

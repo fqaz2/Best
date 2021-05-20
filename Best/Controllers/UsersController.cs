@@ -68,23 +68,10 @@ namespace Best.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(BestUser bestUser)
         {
-            try
-            {
-                await _bestUser.Delete(bestUser.Id);
-
-                if (bestUser.Id == _userManager.GetUserId(User))
-                {
-                    await _signInManager.SignOutAsync();
-                }
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch(Exception ex)
-            {
-                return View();
-            }
+            await _bestUser.Delete(bestUser.Id);
+            return RedirectToAction(nameof(Index));
         }
-        public async Task<IActionResult> block(string id)
+        public async Task<IActionResult> Block(string id)
         {
             if (!(_signInManager.IsSignedIn(User) && ( _userManager.GetUserId(User) == id || await IsAdmin())))
             {
@@ -95,32 +82,10 @@ namespace Best.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> block(BestUser bestUser)
+        public async Task<IActionResult> Block(BestUser bestUser)
         {
-            try
-            {
-                bestUser = await _userManager.FindByIdAsync(bestUser.Id);
-                bestUser.Campaigns = _Campaigns.GetCampaignsByUserId(bestUser.Id);
-                if (bestUser.IsBlock)
-                {
-                    bestUser.IsBlock = false;
-                    await _userManager.SetLockoutEndDateAsync(bestUser, DateTime.Now);
-                }
-                else
-                {
-                    await _userManager.SetLockoutEndDateAsync(bestUser, new DateTime(9999, 12, 30));
-                    if (bestUser.Id == _userManager.GetUserId(User))
-                    {
-                        await _signInManager.SignOutAsync();
-                    }
-                }
-                await _userManager.UpdateAsync(bestUser);
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception ex)
-            {
-                return View();
-            }
+            await _bestUser.Block(bestUser.Id);
+            return RedirectToAction(nameof(Index));
         }
         public async Task<IActionResult> AddRole(string id)
         {
@@ -128,18 +93,13 @@ namespace Best.Controllers
             {
                 return NotFound();
             }
-            BestUser bestUser = await _userManager.FindByIdAsync(id);
-            bestUser.Campaigns = _Campaigns.GetCampaignsByUserId(id);
-            bestUser.Posts = _posts.GetPostsByUserId(id);
-            return View(bestUser);
+            return View(new CombUserRole() { BestUser = _bestUser.GetUserById(id) });
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddRole(CombUserRole combUserRole)
         {
-            BestUser bestUser = await _userManager.FindByIdAsync(combUserRole.BestUser.Id);
-            IdentityRole role = await _roleManager.FindByIdAsync(combUserRole.IdentityRole.Id);
-            await _userManager.AddToRoleAsync( bestUser, role.Name);
+            await _bestUser.AddRole(combUserRole.BestUser.Id, combUserRole.IdentityRole.Id);
             return RedirectToAction(nameof(Index));
         }
     }
