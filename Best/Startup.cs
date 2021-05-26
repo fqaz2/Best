@@ -1,7 +1,12 @@
 using Best.Areas.Identity.Data;
 using Best.Data;
 using Best.Data.Interfaces;
+using Best.Data.Interfaces.IComment;
+using Best.Data.Interfaces.IImg;
+using Best.Data.Models.Comment;
 using Best.Data.Repository;
+using Best.Data.Repository.CommentRepository;
+using Best.Data.Repository.ImgRepository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -30,13 +35,20 @@ namespace Best
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<BestContent>(options => options.UseSqlServer(Configuration.GetConnectionString("BestContextConnection")));
-            services.AddTransient<ICampaigns, CampaignRepository>();
-            services.AddTransient<ITopics, TopicRepository>();
-            services.AddTransient<IPosts, PostRepository>();
+
             services.AddTransient<IBestUsers, BestUserRepository>();
+
             services.AddTransient<IDropbox, DropboxRepository>();
-            services.AddTransient<IPostImg, PostImgRepository>();
+
+            services.AddTransient<ICampaigns, CampaignRepository>();
             services.AddTransient<ICampaignImg, CampaignImgRepository>();
+
+            services.AddTransient<IPosts, PostRepository>();
+            services.AddTransient<IPostImg, PostImgRepository>();
+            services.AddTransient<IPostsComments, PostCommentRepository>();
+
+            services.AddTransient<ITopics, TopicRepository>();
+
             services.AddControllersWithViews();
             services.AddRazorPages();
 

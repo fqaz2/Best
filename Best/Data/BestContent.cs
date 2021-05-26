@@ -1,5 +1,6 @@
 ﻿using Best.Areas.Identity.Data;
 using Best.Data.Models;
+using Best.Data.Models.Comment;
 using Best.Data.Models.Img;
 using Best.Data.Models.Like;
 using Best.Data.Models.Rating;
@@ -30,6 +31,7 @@ namespace Best.Data
         public DbSet<Post> Post { get; set; }
         public DbSet<PostImg> PostImg { get; set; }
         public DbSet<PostLike> PostLike { get; set; }
+        public DbSet<PostComment> PostComments { get; set; }
         //post
         //campaign
         //user

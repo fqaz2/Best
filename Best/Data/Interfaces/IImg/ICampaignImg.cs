@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Best.Data.Interfaces
+namespace Best.Data.Interfaces.IImg
 {
     public interface ICampaignImg
     {

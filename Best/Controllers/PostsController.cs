@@ -11,6 +11,7 @@ using Best.Data.Interfaces;
 using Best.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Best.Data.Models.Like;
+using Best.Data.Interfaces.IComment;
 
 namespace Best.Controllers
 {
@@ -20,13 +21,17 @@ namespace Best.Controllers
         private readonly SignInManager<BestUser> _signInManager;
         private readonly BestContent _context;
         private readonly IPosts _posts;
+        private readonly IPostsComments _postsComments;
         private readonly ICampaigns _Campaigns;
         private readonly IBestUsers _bestUsers;
 
-        public PostsController(BestContent context, IPosts posts, UserManager<BestUser> userManager, SignInManager<BestUser> signInManager, ICampaigns Campaigns, IBestUsers bestUsers)
+        public PostsController(BestContent context, IPosts posts, UserManager<BestUser> userManager, SignInManager<BestUser> signInManager, ICampaigns Campaigns, IBestUsers bestUsers, IPostsComments postsComments)
         {
             _context = context;
+
             _posts = posts;
+            _postsComments = postsComments;
+
             _userManager = userManager;
             _signInManager = signInManager;
             _Campaigns = Campaigns;
@@ -52,6 +57,7 @@ namespace Best.Controllers
             }
 
             var post = _posts.GetPostById(id);
+            post.Comments = post.Comments.OrderBy(d => d.CreateData);
             if (post == null)
             {
                 return NotFound();
@@ -150,6 +156,10 @@ namespace Best.Controllers
         public async Task<JsonResult> LikePost(string PostId, string UserId)
         {
             return Json(_posts.LikePost(PostId, UserId));
+        }
+        public async Task<JsonResult> AddComment(string Id, string UserId, string Text)
+        {
+            return Json(await _postsComments.AddComment(Id, UserId, Text));
         }
     }
 }

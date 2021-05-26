@@ -1,4 +1,5 @@
 ﻿using Best.Data.Interfaces;
+using Best.Data.Interfaces.IImg;
 using Best.Data.Models;
 using Best.Data.Models.Like;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,7 @@ namespace Best.Data.Repository
             _postImg = postImg;
             _dropbox = dropbox;
         }
-        public IEnumerable<Post> GetPosts => bestContent.Post.Include(imgs => imgs.Carousel).Include(c => c.Campaign).Include(u => u.BestUser).Include(l=> l.Likes);
+        public IEnumerable<Post> GetPosts => bestContent.Post.Include(imgs => imgs.Carousel).Include(c => c.Campaign).Include(u => u.BestUser).Include(l => l.Likes).Include(c => c.Comments);
         public Post GetPostById(string post_id) => GetPosts.FirstOrDefault(p => p.Id == post_id);
         public IEnumerable<Post> GetPostsByCampaignId(string Campaign_Id) => GetPosts.Where(p => p.Campaign.Id == Campaign_Id);
         public IEnumerable<Post> GetPostsByUserId(string user_Id) => bestContent.Post.Include(imgs => imgs.Carousel).Include(c => c.Campaign).Where(p => p.Campaign.BestUserId == user_Id);
@@ -55,6 +56,7 @@ namespace Best.Data.Repository
             //start
             bestContent.PostImg.RemoveRange(post.Carousel);
             bestContent.PostLike.RemoveRange(post.Likes);
+            bestContent.PostComments.RemoveRange(post.Comments);
             //end
             bestContent.Remove(post);
             await bestContent.SaveChangesAsync();

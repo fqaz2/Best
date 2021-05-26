@@ -1,4 +1,5 @@
 ﻿using Best.Areas.Identity.Data;
+using Best.Data.Models.Comment;
 using Best.Data.Models.Img;
 using Best.Data.Models.Like;
 using Microsoft.AspNetCore.Http;
@@ -27,6 +28,7 @@ namespace Best.Data.Models
         public virtual BestUser BestUser { get; set; }
         public virtual IEnumerable<PostLike> Likes { get; set; }
         public virtual IEnumerable<PostImg> Carousel { get; set; }
+        public virtual IEnumerable<PostComment> Comments { get; set; }
         [NotMapped]
         public IFormFile ImgFile { get; set; }
         [NotMapped]

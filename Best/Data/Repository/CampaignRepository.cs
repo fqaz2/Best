@@ -1,5 +1,6 @@
 ﻿using Best.Areas.Identity.Data;
 using Best.Data.Interfaces;
+using Best.Data.Interfaces.IImg;
 using Best.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -63,6 +64,7 @@ namespace Best.Data.Repository
                     p = _posts.GetPostById(p.Id);
                     bestContent.PostImg.RemoveRange(p.Carousel);
                     bestContent.PostLike.RemoveRange(p.Likes);
+                    bestContent.PostComments.RemoveRange(p.Comments);
                 });
             bestContent.Post.RemoveRange(campaign.Posts);
             bestContent.CampaignRating.RemoveRange(campaign.Ratings);

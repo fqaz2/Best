@@ -1,4 +1,5 @@
 ﻿using Best.Data.Interfaces;
+using Best.Data.Interfaces.IImg;
 using Best.Data.Models;
 using Best.Data.Models.Img;
 using Dropbox.Api;
@@ -11,7 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Best.Data.Repository
+namespace Best.Data.Repository.ImgRepository
 {
     public class CampaignImgRepository : ICampaignImg
     {
