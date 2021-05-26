@@ -1,22 +1,18 @@
 ﻿using Best.Areas.Identity.Data;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Best.Data.Models.Rating
+namespace Best.Data.Models.Comment
 {
-    public class CampaignRating
+    public class Comment
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
-        [Required]
-        public int Rating { get; set; }
-        [ForeignKey("Campaign")]
-        public string CampaignId { get; set; }
-        public virtual Campaign Campaign { get; set; }
+        public string Text { get; set; }
+        public DateTime CreateData { get; set; }
         [ForeignKey("BestUser")]
         public string BestUserId { get; set; }
         public virtual BestUser BestUser { get; set; }

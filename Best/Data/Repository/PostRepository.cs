@@ -29,7 +29,7 @@ namespace Best.Data.Repository
         //CRUD
         public async Task Create(Post post)
         {
-            post.createData = DateTime.Now;
+            post.CreateData = DateTime.Now;
             bestContent.Post.Add(post);
             await bestContent.SaveChangesAsync();
 
@@ -40,7 +40,7 @@ namespace Best.Data.Repository
         }
         public async Task Update(Post post)
         {
-            post.createData = DateTime.Now;
+            post.CreateData = DateTime.Now;
 
             bestContent.Post.Update(post);
             await bestContent.SaveChangesAsync();

@@ -34,7 +34,7 @@ namespace Best.Data.Repository
         //CRUD
         public async Task Create(Campaign Campaign)
         {
-            Campaign.createData = DateTime.Now;
+            Campaign.CreateData = DateTime.Now;
             bestContent.Campaign.Add(Campaign);
             await bestContent.SaveChangesAsync();
 
@@ -45,7 +45,7 @@ namespace Best.Data.Repository
         }
         public async Task Update(Campaign Campaign)
         {
-            Campaign.createData = DateTime.Now;
+            Campaign.CreateData = DateTime.Now;
             bestContent.Campaign.Update(Campaign);
             await bestContent.SaveChangesAsync();
 
@@ -77,7 +77,7 @@ namespace Best.Data.Repository
             var ratings = bestContent.CampaignRating.Where(c => c.CampaignId == Campaign_id);
             if (!ratings.Any())
                 return 0;
-            return await ratings.Select(r => r.rating).AverageAsync();
+            return await ratings.Select(r => r.Rating).AverageAsync();
         }
     }
 }

@@ -21,15 +21,15 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="mintext" class="control-label"></label>
-                <textarea asp-for="mintext" id="mintext" onchange="addInMarkdown('mark1','mintext')" class="form-control"></textarea>
-                <span asp-validation-for="mintext" class="text-danger"></span>
+                <label asp-for="ShortText" class="control-label"></label>
+                <textarea asp-for="ShortText" id="mintext" onchange="addInMarkdown('mark1','mintext')" class="form-control"></textarea>
+                <span asp-validation-for="ShortText" class="text-danger"></span>
                 <markdown id="mark1" />
             </div>
             <div class="form-group">
-                <label asp-for="text" class="control-label"></label>
-                <textarea asp-for="text" id="text" onchange="addInMarkdown('mark2','text')" class="form-control"></textarea>
-                <span asp-validation-for="text" class="text-danger"></span>
+                <label asp-for="Text" class="control-label"></label>
+                <textarea asp-for="Text" id="text" onchange="addInMarkdown('mark2','text')" class="form-control"></textarea>
+                <span asp-validation-for="Text" class="text-danger"></span>
                 <markdown id="mark2" />
             </div>
             <div class="form-group">

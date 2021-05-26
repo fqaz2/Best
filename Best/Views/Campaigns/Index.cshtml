@@ -62,12 +62,12 @@
                 {
                     <a class="btn btn-primary btn-sm" href="#" role="button"> @Campaign.Topic.Name </a>
                 }
-            <p class="card-text">@Campaign.shortText</p>
+            <p class="card-text">@Campaign.ShortText</p>
             </div>
             <div class="card-footer">
                 <p class="d-flex flex-column justify-content-end" style="margin-bottom: 0px;">
                     <a asp-action="Details" asp-route-id="@Campaign.Id" class="btn btn-primary align-self-end">Подробнее</a>
-                    <small class="text-muted text-right">@Campaign.createData</small>
+                    <small class="text-muted text-right">@Campaign.CreateData</small>
                 </p>
             </div>
         </div>

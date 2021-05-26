@@ -16,9 +16,9 @@ namespace Best.Data.Models
         public string Id { get; set; }
         public string Img { get; set; }
         public string Name { get; set; }
-        public string text { get; set; }
-        public string mintext { get; set; }
-        public DateTime createData { get; set; }
+        public string Text { get; set; }
+        public string ShortText { get; set; }
+        public DateTime CreateData { get; set; }
         [ForeignKey("Campaign")]
         public string CampaignId { get; set; }
         public virtual Campaign Campaign { get; set; }

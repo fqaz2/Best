@@ -154,7 +154,7 @@ namespace Best.Controllers
             CampaignRating campaignRating = new CampaignRating();
             campaignRating.Campaign = await _context.Campaign.FirstOrDefaultAsync(p => p.Id == CampaignId);
             campaignRating.BestUser = await _context.BestUser.FirstOrDefaultAsync(u => u.Id == UserId);
-            campaignRating.rating = Convert.ToInt32(Rating);
+            campaignRating.Rating = Convert.ToInt32(Rating);
             _context.Add(campaignRating);
             await _context.SaveChangesAsync();
             return Json(true);

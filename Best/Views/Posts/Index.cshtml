@@ -15,7 +15,7 @@
                 <img class="img-fluid" src="@await _dropbox.getImgByUrl(post.Img)" alt="Card image cap">
             }
             <div class="card-body">
-                <p class="card-text">@Html.DisplayFor(p => post.mintext)</p>
+                <p class="card-text">@Html.DisplayFor(p => post.ShortText)</p>
             </div>
             <div class="card-footer">
                 <p class="d-flex justify-content-end" style="margin-bottom: 0px;">
@@ -70,7 +70,7 @@
                     
                 </p>
                 <p class="d-flex justify-content-end" style="margin-bottom:0px;">
-                    <small class="text-muted text-right">@post.createData</small>
+                    <small class="text-muted text-right">@post.CreateData</small>
                 </p>
             </div>
         </div>

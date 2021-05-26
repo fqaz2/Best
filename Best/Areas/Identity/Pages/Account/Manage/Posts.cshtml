@@ -27,10 +27,10 @@
                     <tr>
                         <td>@Html.DisplayFor(p => post.Name)</td>
                         <td>
-                            @post.mintext
+                            @Html.DisplayFor(p => post.ShortText)
                         </td>
                         <td>
-                            <a asp-controller="Campaigns" asp-action="Details" asp-route-id="@post.CampaignId">@post.Campaign.Name</a>
+                            <a asp-controller="Campaigns" asp-action="Details" asp-route-id="@post.CampaignId">@Html.DisplayFor(p => post.Campaign.Name)</a>
                         </td>
                         <td>
                             <a class="btn btn-primary" asp-controller="Posts" asp-action="Edit" asp-route-id="@post.Id">Edit</a>

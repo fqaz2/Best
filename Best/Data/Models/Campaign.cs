@@ -17,9 +17,9 @@ namespace Best.Data.Models
         public string Img { get; set; }
         public string Name { get; set; }
         public string Bonuses { get; set; }
-        public string shortText { get; set; }
-        public string text { get; set; }
-        public DateTime createData { get; set; }
+        public string ShortText { get; set; }
+        public string Text { get; set; }
+        public DateTime CreateData { get; set; }
         public IEnumerable<Post> Posts { get; set; }
         [ForeignKey("Topic")]
         public string TopicId { get; set; }
