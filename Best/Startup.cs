@@ -11,12 +11,16 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -51,6 +55,23 @@ namespace Best
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddLocalization(Options=> { Options.ResourcesPath = "Resources"; });//add lang
+            services.AddMvc().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix).AddDataAnnotationsLocalization();
+            services.AddControllersWithViews();
+
+            services.Configure<RequestLocalizationOptions>(
+                options =>
+                {
+                    var supportCultures = new List<CultureInfo>
+                    {
+                        new CultureInfo("en"),
+                        new CultureInfo("ru")
+                    };
+                    options.DefaultRequestCulture = new RequestCulture("en");
+                    options.SupportedCultures = supportCultures;
+                    options.SupportedUICultures = supportCultures;
+                });
 
             services.AddAuthentication()
                 .AddGoogle(Options =>
@@ -96,6 +117,15 @@ namespace Best
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseRequestLocalization(app.ApplicationServices.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
+
+            //var supportedCultures = new[] { "en", "ru" };//add lang
+            //var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(supportedCultures[0])
+            //    .AddSupportedCultures(supportedCultures)
+            //    .AddSupportedUICultures(supportedCultures);
+
+            //app.UseRequestLocalization(localizationOptions);
 
             app.UseEndpoints(endpoints =>
             {
